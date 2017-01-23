@@ -9,7 +9,7 @@
 				<div ng-if="!trlData.length" class="emptyComments"><span>No Feeds Yet</span></div>
 				<div ng-if="trlData.length > 0" class="commentDiv col-md-12" data-index="{{list.id}}" id="{{list.id}}" ng-repeat="list in trlData | orderBy:'pos':false" droppable>
 					<div class="cmtTitle">
-						<span>{{list.name}}</span>
+						<span>{{list.name}} {{savedListIndex($index)}}</span>
 					</div>
 					<div ng-if="!list.cards.length" class="emptyComments"><span>No Chirps Yet</span></div>
 
@@ -32,8 +32,9 @@
 							
 						</span>
 						<span class="lab" ng-show="card.actions.length">
-							<span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
-							<span class="thin">from</span> {{card.actions[0].data.listBefore.name}}
+							<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
+							<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
+							<span class="thin">Total Spend</span> {{getTotalSpend($index, list.id)}}
 						</span>
 
 						<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
