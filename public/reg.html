@@ -1,0 +1,44 @@
+<section class="login">	
+	<form class="formLogin" ng-Submit="register()">
+		<table class="noborder">
+			<tr>
+				<td>
+					<label for="username">Username</label>
+				</td>
+				<td>
+					<input type="username" required id="username" ng-model="user.username" placeholder="Username" class="form-control">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="fullname">Full Name</label>
+				</td>
+				<td>
+					<input type="text" id="fullname" ng-model="user.fullname" placeholder="Full Name" class="form-control">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="email">E-mail</label>
+				</td>
+				<td>
+					<input type="e-mail" id="email" ng-model="user.email" placeholder="E-mail" class="form-control">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="password">Password</label>
+				</td>
+				<td>
+					<input type="password" required id="password" ng-model="user.password" placeholder="Password" class="form-control">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="text-center">
+					<button type="submit" class="btn btn-chirp">Register</button>
+					<p class="text-warning">{{error_message}}</p>
+				</td>
+			</tr>
+		</table>
+	</form>
+</section>

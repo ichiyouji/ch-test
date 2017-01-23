@@ -1,0 +1,53 @@
+<section class="container">
+	<div class="commentWrap row" ng-controller="CmtCtrl">
+		<div class="commentCont col-xs-12" ng-class="authenticated ? 'col-md-8 col-sm-7' : 'col-md-8 col-md-offset-2'">
+			<div class="itemhead">
+				<span>Chirp Feeds</span>
+				<span class="visible-sm"></span>
+			</div>
+			<div class="commentContainer">
+				<div ng-if="!comments.length" class="emptyComments"><span>No Chirps Yet</span></div>
+
+				<div ng-if="comments.length > 0" class="commentItem" id="{{comment._id}}" ng-repeat="comment in comments | orderBy:'created_at':true">
+					<span class="comment">
+						<span class="tick">"</span> 
+						<!-- <textarea class="commentContent contentEditor"></textarea> -->
+						<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
+						<span class="commentContent">{{comment.text}}</span>
+						<span class="tick">"</span>
+					</span>
+					<span class="timeStamp">Date: {{comment.created_at | date:"h:mm a 'on' MM d, y"}}</span>
+					<span class="userName">posted by <span class="name">{{comment.created_by ? '@'+comment.created_by : 'Anon'}}</span></span>
+					
+					<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
+						<!-- <edit-btn></edit-btn>
+						<del-btn></del-btn> -->
+					<span class="btn btn-xs btn-default" ng-click="editPost(comment._id)">
+						<i class="fa fa-edit"></i>
+					</span>
+					<span class="btn btn-xs btn-danger" ng-click="deletePost(comment._id)">
+						<i class="fa fa-trash"></i>
+					</span>
+					</button-group>
+				</div>
+			</div>
+		</div>
+		<div class="commentForm col-md-4 col-sm-5 col-xs-12" ng-show="authenticated">
+			<div class="itemhead"><span>Submit Chirps</span></div>
+			<form ng-Submit="post()">
+				<div class="form-group">
+					<span>@{{currentUser}} says,</span>
+					<!-- <input required class="form-control" type="text" name="" placeholder="username" ng-model="newComments.username"> -->
+				</div>
+				<div class="form-group">
+					<textarea name="" class="form-control" placeholder="Chirp here . . ." ng-model="newComments.text"></textarea>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-chirp">CHIRP!</button>
+					<p class="text-error">{{error_message}}</p>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>

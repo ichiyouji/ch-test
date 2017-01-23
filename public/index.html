@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CHIRP!</title>
+	<script type="text/javascript" src="javascripts/jquery.min.js"></script>
+	<script type="text/javascript" src="javascripts/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="res/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="javascripts/angular.min.js"></script>
+	<script type="text/javascript" src="javascripts/angular-route.js"></script>
+	<script type="text/javascript" src="javascripts/angular-resource.js"></script>
+	<script type="text/javascript" src="javascripts/moment.min.js"></script>
+	<script type="text/javascript" src="javascripts/angular-moment.min.js"></script>
+	<script type="text/javascript" src="javascripts/ui-bootstrap.min.js"></script>
+	<script type="text/javascript" src="javascripts/supports.js"></script>
+	<script type="text/javascript" src="javascripts/mainApp.js"></script>
+	<link rel="stylesheet" type="text/css" href="res/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="res/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/app.css">
+</head>
+
+<body ng-app="myTestApp">
+	<div class="nav">
+		<nav class="navbar-fluid navbar-default navbar-fixed-top">
+			<div class="container">
+				<!-- <a class="navbar-brand" href="#/"> Chirp! </a> -->
+				<div class="centerNavs">
+					<a class="navbar-center" href="#/"> 
+						<div>
+							<i class="fa fa-trello"></i>
+						</div>
+						<!-- <span class="spanner">Home</span> -->
+					</a>
+					<!-- <div class="links" ng-hide="authenticated">
+						<ul>
+							<li class="linkItem">
+								<a type="button" data-toggle="modal" data-target="#modalUserLogin">
+									<i class="fa fa-sign-in"></i>
+									<span class="spanner">Login</span>
+								</a>
+							</li>
+							<li class="linkItem">
+								<a data-toggle="modal" data-target="#modalUserRegister">
+									<i class="fa fa-user-plus"></i>
+									<span class="spanner">Register</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="links" ng-show="authenticated">
+						<ul>
+							<li class="linkItem">
+								<a href="#/users">
+									<i class="fa fa-user-circle"></i>
+									<span class="spanner">Manage Users</span>
+								</a>
+							</li>
+							<li class="linkItem">
+								<a href="#/" ng-click="signout()">
+									<i class="fa fa-sign-out"></i>
+									<span class="spanner">Logout</span>
+								</a>
+							</li>
+						</ul>
+					</div> -->
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div class="wrap">
+		<div ng-view></div>
+	</div>
+	<div class="modalCont">
+		<div class="modal fade" id="modalUserLogin" ng-controller="authController">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">Login</h4>
+					</div>
+					<div class="modal-body">
+						<form ng-Submit="login()">
+							<div class="form-group">
+								<input type="text" class="form-control" name="username" placeholder="user Name" ng-model="user.username">
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password">
+							</div>
+							<div class="form-group">
+								<button class="btn btn-block btn-chirp" type="submit">Login</button>
+								<p class="text-error">{{error_message}}</p>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="modalUserRegister" ng-controller="regController">
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">Register</h4>
+					</div>
+					<div class="modal-body">
+						<form ng-Submit="register()">
+							<div class="row">
+								<div class="col-xs-12">
+									<input type="hidden" name="_id" ng-model="user_cred._id">
+									<div class="form-group">
+										<div class="col-sm-4">
+											<label>Username</label>
+										</div>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" name="username" placeholder="Username" ng-model="user.username">
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-4">
+											<label>Full Name</label>
+										</div>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" name="fullname" placeholder="Full Name" ng-model="user.fullname">
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-4">
+											<label>E-mail</label>
+										</div>
+										<div class="col-sm-8">
+											<input type="email" class="form-control" name="email" placeholder="E-mail" ng-model="user.email">
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-4">
+											<label>Password</label>
+										</div>
+										<div class="col-sm-8">
+											<input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password">
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-12">
+											<button class="btn btn-block btn-chirp" type="submit">Register</button>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
