@@ -93,6 +93,24 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
     console.log($scope.trlData);
   });
 
+  $scope.getDistinctCardList = function(idCard, idList) {
+  	if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length)
+      return "0";
+    else {
+      var listArray = [];
+      $scope.trlData[$scope.currentListIndex].cards[idCard].actions.forEach(function(entry) {
+      	if(listArray.indexOf() < 0){
+      		listArray[entry.data.listAfter.id] = {
+      			name: entry.data.listAfter.name,
+      			id: entry.data.listAfter.id,
+      			total: $scope.getTotalSpend(idCard, entry.data.listAfter.id)
+      		};
+	    }
+      });
+      console.log(listArray);
+    }
+  } 
+
   $scope.getTotalSpend = function(idCard, idList) {
     //alert(idCard + " // " + idList);
     //console.log(idCard, b);

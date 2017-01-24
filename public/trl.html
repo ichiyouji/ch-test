@@ -35,6 +35,7 @@
 							<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
 							<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
 							<span class="thin">Total Spend</span> {{getTotalSpend($index, list.id)}}
+							{{getDistinctCardList($index, list.id)}}
 						</span>
 
 						<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
