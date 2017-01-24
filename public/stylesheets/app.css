@@ -432,6 +432,30 @@ nav .container{
     font-size: 12px;
     margin-top: 6px;
 }
+.commentWrap .commentItem .lab.history{
+	padding: 6px 8px;
+	background: #fff;
+	border:1px solid #ccc;
+	display: block;
+	text-align: left;
+    color: #888;
+    font-weight: lighter;
+    font-size: 14px;
+    margin-top: 6px;
+}
+.commentWrap .commentItem .lab.history span.hist{
+	display: block;
+	margin-top: 4px;
+}
+.commentWrap .commentItem .lab.history span.name{
+	font-weight: bold;
+	color: #68a;
+}
+.commentWrap .commentItem .lab.history span.total{
+	font-weight: bold;
+	color: #666;
+}
+
 .commentWrap .commentItem .lab .thin{
     font-weight: normal;
 }
