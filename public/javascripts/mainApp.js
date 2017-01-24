@@ -91,7 +91,7 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
   $scope.currentListIndex = 0;
 
   $http.get('/api/trl/').success(function(data) {
-    // $scope.trlData = data;
+    $scope.trlData = data;
     // console.log($scope.trlData);
   });
 
