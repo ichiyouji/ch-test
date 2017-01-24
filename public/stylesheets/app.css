@@ -405,7 +405,7 @@ nav .container{
 }
 .commentWrap .commentItem .userName{
 	/*display: block;*/
-	font-size: 12px;
+	font-size: 14px;
 	color: #aaa;
 }
 .commentWrap .commentItem .userName .name{
@@ -429,7 +429,7 @@ nav .container{
 	text-align: left;
     color: #888;
     font-weight: bolder;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 6px;
 }
 .commentWrap .commentItem .lab.history{
@@ -461,7 +461,7 @@ nav .container{
 }
 .commentWrap .commentItem .comment{
 	display: block;
-	font-size: 13px;
+	font-size: 14px;
 	padding-right: 50px;
 }
 .commentWrap .commentItem .comment .contentEditor{
