@@ -10,6 +10,7 @@
 				<div ng-if="trlData.length > 0" class="commentDiv col-md-12" data-index="{{list.id}}" id="{{list.id}}" ng-repeat="list in trlData | orderBy:'pos':false" droppable>
 					<div class="cmtTitle">
 						<span>{{list.name}} {{savedListIndex($index)}}</span>
+						<span class="pull-right" style="font-size: 16px;">total: {{getTotal(list.id)}}</span>
 					</div>
 					<div ng-if="!list.cards.length" class="emptyComments"><span>No Chirps Yet</span></div>
 
