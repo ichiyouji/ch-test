@@ -296,12 +296,19 @@ app.directive('listhistory', function($compile){
       else {
         $scope.list.cards[$attrs.index].actions
         var item = '<span>history:</span>';
-        $scope.list.cards[$attrs.index].actions.forEach(function(entry) {
+        $scope.list.cards[$attrs.index].actions.forEach(function(entry,index) {
           if($scope.listArray.indexOf() < 0){
             $scope.listArray[entry.data.listAfter.id] = {
               name: entry.data.listAfter.name,
               id: entry.data.listAfter.id,
               total: $scope.getTotalSpend($attrs.index, entry.data.listAfter.id)
+            };
+          }
+          if (index == $scope.list.cards[$attrs.index].actions.length - 1) {
+            $scope.listArray[entry.data.listBefore.id] = {
+              name: entry.data.listBefore.name,
+              id: entry.data.listBefore.id,
+              total: $scope.getTotalSpend($attrs.index, entry.data.listBefore.id)
             };
           }
         });
