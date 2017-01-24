@@ -70,9 +70,10 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
 
     r = '';
 
-    if (days > 0) { r = r + days + ' days '; }
+    if (days > 0) { r = r + days + ' days, '; }
     if (hours > 0) { r = r + hours + ' hours '; }
     if (minutes > 0) { r = r + minutes + ' minutes '; }
+    if (seconds > 0 && minutes <1 && hours <1 && days <1) { r = r + seconds % 60 + ' seconds '; }
 
     return r;
   }
@@ -174,11 +175,19 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
   $scope.getTotalSpend = function(idCard, idList) {
     //alert(idCard + " // " + idList);
     //console.log(idCard, b);
-    if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length)
-      return "0";
-    else {
+    var currentTime = new Date();
+    if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length){
+      var e = $scope.trlData[$scope.currentListIndex].cards[idCard].id;
+      var s = e.substring(0, 8);
+      var p = parseInt(s, 16);
+      var e = p * 1000;
+      var d = new Date(e);
+
+      tempSpend = parseInt(currentTime.getTime() - d.getTime());
+      console.log(tempSpend);
+      return tempSpend.toString().toTimeFormat();
+    } else {
       var currentList = "";
-      var currentTime = new Date();
       var spendTime = 0;
       var tempSpend = "";
       var recordDate = "";
@@ -204,9 +213,9 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
       	
       	var e = $scope.trlData[$scope.currentListIndex].cards[idCard].id;
       	var s = e.substring(0, 8);
-	    var p = parseInt(s, 16);
-	    var e = p * 1000;
-	    var d = new Date(e);
+  	    var p = parseInt(s, 16);
+  	    var e = p * 1000;
+  	    var d = new Date(e);
 
         tempSpend = currentTime.getTime() - d.getTime();
         spendTime = parseInt(spendTime) + parseInt(tempSpend);
@@ -299,7 +308,7 @@ app.directive('listhistory', function($compile){
         // console.log($scope.listArray);
         // var elem = angular.element(item);
         var c = $compile(item)($scope);
-        console.log($scope.listArray)
+        // console.log($scope.listArray)
         $element.append(c);
       }
     }
