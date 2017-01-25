@@ -7,6 +7,11 @@ var bCrypt = require('bcrypt-nodejs');
 var Trello = require('node-trello');
 var async = require('async');
 //Used for routes that must be authenticated.
+
+var trelloAPIToken = '52af2d4bfeaa723904bd8d01a6101acd';
+var trelloUserToken = 'c0e7b0d4185faa441c89000d867b36bd98b3335ceb5cbc43c5cf0a7842c24abc';
+
+
 function isAuthenticated(req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler 
   // Passport adds this method to request object. A middleware is allowed to add properties to
@@ -24,13 +29,19 @@ function isAuthenticated(req, res, next) {
   return res.redirect('/#login');
 };
 
+router.route('/trl-token')
+  .post(function(req, res) {
+    trelloUserToken = req.body.trelloToken;
+    return res.send({'mgs': 'mantap'});
+  });
+
 router.route('/trl')
   .get(function(req, res) {
     var Trello = require('node-trello');
     var async = require('async');
 
     var listArray = [];
-    var t = new Trello('52af2d4bfeaa723904bd8d01a6101acd', 'c0e7b0d4185faa441c89000d867b36bd98b3335ceb5cbc43c5cf0a7842c24abc');
+    var t = new Trello(trelloAPIToken, trelloUserToken);
     t.get('/1/members/me/boards/', {}, function(err, data) {
       async.eachSeries(data, function(board, nextBoard) {
         if (board.name == 'Recruitment 2017') {

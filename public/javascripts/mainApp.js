@@ -15,6 +15,18 @@ var app = angular.module('myTestApp', ['ngRoute', 'ngResource', 'angularMoment']
 app.config(function($routeProvider) {
   $routeProvider
     .when('/', {
+      templateUrl: 'trl-login.html',
+      controller: 'trlLoginCtrl'
+    })
+    .when('/confirm-token/:tokenID', {
+      templateUrl: 'trl-login.html',
+      controller: 'trlConfirmTokenCtrl'
+    })
+    .when('/board-list', {
+      templateUrl: 'trl-login.html',
+      controller: 'trlBoardCtrl'
+    })
+    .when('/board-report', {
       templateUrl: 'trl.html',
       controller: 'trlCtrl'
     })
@@ -44,6 +56,10 @@ app.factory('usearchService', function($resource) {
   return $resource('/users/find/:id', null, { update: { method: 'PUT' } });
 })
 
+app.factory('tokenService', function($resource) {
+  return $resource('/trl-token', null, { update: { method: 'PUT' } });
+})
+
 app.run(function($rootScope, $location, $http, postService) {
   $http.get('/auth/check/').success(function(data) {
     if (data.state == 'success') {
@@ -57,6 +73,21 @@ app.run(function($rootScope, $location, $http, postService) {
     }
   });
 })
+
+
+app.controller('trlLoginCtrl', function($scope, $compile, $http) {});
+
+app.controller('trlConfirmTokenCtrl', function($scope, $routeParams, $compile, $http) {
+  var tokenReturn =  $routeParams.tokenID;
+  var s = tokenReturn.split("=");
+  $http.post('/api/trl-token/',{trelloToken: s[1]}).success(function(data) {
+    window.location.href = '#/board-list';
+  });
+});
+
+app.controller('trlBoardCtrl', function($scope, $routeParams, $compile, $http) {
+  
+});
 
 app.controller('trlCtrl', function($scope, $compile, $http) {
   String.prototype.toTimeFormat = function() {
@@ -73,7 +104,7 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
     if (days > 0) { r = r + days + ' days, '; }
     if (hours > 0) { r = r + hours + ' hours '; }
     if (minutes > 0) { r = r + minutes + ' minutes '; }
-    if (seconds > 0 && minutes <1 && hours <1 && days <1) { r = r + seconds % 60 + ' seconds '; }
+    if (seconds > 0 && minutes < 1 && hours < 1 && days < 1) { r = r + seconds % 60 + ' seconds '; }
 
     return r;
   }
@@ -92,33 +123,32 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
 
   $http.get('/api/trl/').success(function(data) {
     $scope.trlData = data;
-    // console.log($scope.trlData);
   });
 
   $scope.getDistinctCardList = function(idCard, idList) {
-  	if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length)
+    if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length)
       return "0";
     else {
       var listArray = [];
       $scope.trlData[$scope.currentListIndex].cards[idCard].actions.forEach(function(entry) {
-      	if(listArray.indexOf() < 0){
-      		listArray[entry.data.listAfter.id] = {
-      			name: entry.data.listAfter.name,
-      			id: entry.data.listAfter.id,
-      			total: $scope.getTotalSpend(idCard, entry.data.listAfter.id)
-      		};
-	    }
+        if (listArray.indexOf() < 0) {
+          listArray[entry.data.listAfter.id] = {
+            name: entry.data.listAfter.name,
+            id: entry.data.listAfter.id,
+            total: $scope.getTotalSpend(idCard, entry.data.listAfter.id)
+          };
+        }
       });
       // console.log(listArray);
     }
-  } 
+  }
 
-  $scope.getTotal = function(idList){
+  $scope.getTotal = function(idList) {
     var totalTime = 0;
     if (!$scope.trlData[$scope.currentListIndex].cards.length)
       return "0";
     else {
-      $scope.trlData[$scope.currentListIndex].cards.forEach(function(card,i){
+      $scope.trlData[$scope.currentListIndex].cards.forEach(function(card, i) {
         var currentList = "";
         var currentTime = new Date();
         var spendTime = 0;
@@ -136,7 +166,7 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
           tempSpend = currentTime.getTime() - d.getTime();
           spendTime = parseInt(spendTime) + parseInt(tempSpend);
           totalTime += spendTime;
-        }else{
+        } else {
           card.actions.forEach(function(entry) {
             // i++;
             if (currentList !== entry.data.listAfter.id && entry.data.listAfter.id === idList) {
@@ -154,7 +184,7 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
 
           //calc spend time from the first time card created until moved to the second list.
           if (lastPosition === idList) {
-            
+
             var e = card.id;
             var s = e.substring(0, 8);
             var p = parseInt(s, 16);
@@ -176,7 +206,7 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
     //alert(idCard + " // " + idList);
     //console.log(idCard, b);
     var currentTime = new Date();
-    if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length){
+    if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length) {
       var e = $scope.trlData[$scope.currentListIndex].cards[idCard].id;
       var s = e.substring(0, 8);
       var p = parseInt(s, 16);
@@ -210,12 +240,12 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
 
       //calc spend time from the first time card created until moved to the second list.
       if (lastPosition === idList) {
-      	
-      	var e = $scope.trlData[$scope.currentListIndex].cards[idCard].id;
-      	var s = e.substring(0, 8);
-  	    var p = parseInt(s, 16);
-  	    var e = p * 1000;
-  	    var d = new Date(e);
+
+        var e = $scope.trlData[$scope.currentListIndex].cards[idCard].id;
+        var s = e.substring(0, 8);
+        var p = parseInt(s, 16);
+        var e = p * 1000;
+        var d = new Date(e);
 
         tempSpend = currentTime.getTime() - d.getTime();
         spendTime = parseInt(spendTime) + parseInt(tempSpend);
@@ -232,15 +262,15 @@ app.controller('trlCtrl', function($scope, $compile, $http) {
 })
 
 
-app.directive('listhistory', function($compile){
-  return{
-     // A = attribute, E = Element, C = Class and M = HTML Comment
-    restrict:'E',
-    scope:{
-      list:'=list',
+app.directive('listhistory', function($compile) {
+  return {
+    // A = attribute, E = Element, C = Class and M = HTML Comment
+    restrict: 'E',
+    scope: {
+      list: '=list',
       // index:'=index'
     },
-     //The link function is responsible for registering DOM listeners as well as updating the DOM.
+    //The link function is responsible for registering DOM listeners as well as updating the DOM.
     link: function($scope, $element, $attrs) {
 
       $scope.getTotalSpend = function(idCard, idList) {
@@ -273,7 +303,7 @@ app.directive('listhistory', function($compile){
 
           //calc spend time from the first time card created until moved to the second list.
           if (lastPosition === idList) {
-            
+
             var e = $scope.list.cards[idCard].id;
             var s = e.substring(0, 8);
             var p = parseInt(s, 16);
@@ -296,8 +326,8 @@ app.directive('listhistory', function($compile){
       else {
         $scope.list.cards[$attrs.index].actions
         var item = '<span>history:</span>';
-        $scope.list.cards[$attrs.index].actions.forEach(function(entry,index) {
-          if($scope.listArray.indexOf() < 0){
+        $scope.list.cards[$attrs.index].actions.forEach(function(entry, index) {
+          if ($scope.listArray.indexOf() < 0) {
             $scope.listArray[entry.data.listAfter.id] = {
               name: entry.data.listAfter.name,
               id: entry.data.listAfter.id,
@@ -313,8 +343,8 @@ app.directive('listhistory', function($compile){
           }
         });
 
-        for(var e in $scope.listArray){
-          item += '<span class="hist">' + 'in <span class="name">' + $scope.listArray[e].name +'</span> for <span class="total">'+ $scope.getTotalSpend($attrs.index, $scope.listArray[e].id) + '</span></span>';
+        for (var e in $scope.listArray) {
+          item += '<span class="hist">' + 'in <span class="name">' + $scope.listArray[e].name + '</span> for <span class="total">' + $scope.getTotalSpend($attrs.index, $scope.listArray[e].id) + '</span></span>';
         }
 
         // console.log($scope.listArray);
@@ -346,42 +376,42 @@ app.directive('listhistory', function($compile){
 // })
 
 // app.directive('droppable', function($compile){
-// 	return{
-// 	    restrict: 'A',
-// 	    link: function($scope,element,attrs){
-// 	      //This makes an element Droppable
-// 	      element.droppable({
-// 	        drop:function(event,ui) {
-// 	          var dragIndex = angular.element(ui.draggable).data('index'),
-// 	              dragEl = angular.element(ui.draggable).parent(),
-// 	              dropEl = angular.element(this);
-// 	          if (dragEl.data('index') != dropEl.data('index')) {
-// 	          	var temp = {};
-// 	          	$scope.trlData.map(function(e,i, arr){
-// 	          		var elem = e;
-// 	          		if (elem.id == dragEl.data('index')) {
-// 	          			elem.cards.map(function(card, index, arr){
-// 	          				if (card.id == dragIndex) {
-// 	          					temp = card;
-// 	          					arr.splice(index,1);
-// 	          				}
-// 	          			});
-// 	          		}
-// 	          		arr[i] = elem;
-// 	          	})
-// 	          	$scope.trlData.map(function(e,i, arr){
-// 	          		var elem = e;
-// 	          		if (elem.id == dropEl.data('index')) {
-// 	          			elem.cards.push(temp);
-// 	          		}
-// 	          		arr[i] = elem;
-// 	          	})
-// 	          }
-// 	          $scope.$apply();
-// 	        }
-// 	      });
-// 	    }
-// 	}
+//  return{
+//      restrict: 'A',
+//      link: function($scope,element,attrs){
+//        //This makes an element Droppable
+//        element.droppable({
+//          drop:function(event,ui) {
+//            var dragIndex = angular.element(ui.draggable).data('index'),
+//                dragEl = angular.element(ui.draggable).parent(),
+//                dropEl = angular.element(this);
+//            if (dragEl.data('index') != dropEl.data('index')) {
+//              var temp = {};
+//              $scope.trlData.map(function(e,i, arr){
+//                var elem = e;
+//                if (elem.id == dragEl.data('index')) {
+//                  elem.cards.map(function(card, index, arr){
+//                    if (card.id == dragIndex) {
+//                      temp = card;
+//                      arr.splice(index,1);
+//                    }
+//                  });
+//                }
+//                arr[i] = elem;
+//              })
+//              $scope.trlData.map(function(e,i, arr){
+//                var elem = e;
+//                if (elem.id == dropEl.data('index')) {
+//                  elem.cards.push(temp);
+//                }
+//                arr[i] = elem;
+//              })
+//            }
+//            $scope.$apply();
+//          }
+//        });
+//      }
+//  }
 // })
 
 app.controller('cmtCtrl',
