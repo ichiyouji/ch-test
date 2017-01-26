@@ -1,13 +1,13 @@
 <section class="container">
 	<div class="commentWrap row">
-		<div class="commentCont col-xs-12" ng-class="authenticated ? 'col-md-8 col-sm-7' : 'col-md-8 col-md-offset-2'">
+		<div class="commentCont col-xs-12" ng-class="authenticated ? 'col-md-8 col-sm-7' : 'col-md-12 col-md-offset'">
 			<div class="itemhead">
 				<span>Trello Feeds</span>
 				<span class="visible-sm"></span>
 			</div>
 			<div class="commentContainer row">
 				<div ng-if="!trlData.length" class="emptyComments"><span>No Feeds Yet</span></div>
-				<div ng-if="trlData.length > 0" class="commentDiv col-md-12" data-index="{{list.id}}" id="{{list.id}}" ng-repeat="list in trlData | orderBy:'pos':false" droppable>
+				<div ng-if="trlData.length > 0" class="commentDiv col-md-4" data-index="{{list.id}}" id="{{list.id}}" ng-repeat="list in trlData | orderBy:'pos':false" droppable>
 					<div class="cmtTitle">
 						<span>{{list.name}} {{savedListIndex($index)}}</span>
 						<span class="pull-right" style="font-size: 16px;">total: {{getTotal(list.id)}}</span>

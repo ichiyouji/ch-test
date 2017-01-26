@@ -1,0 +1,27 @@
+<section class="container">
+	<div class="commentWrap row">
+		<div class="commentCont col-xs-12" ng-class="authenticated ? 'col-md-8 col-sm-7' : 'col-md-8 col-md-offset-2'">
+			<div class="itemhead">
+				<span>Trello Boards</span>
+				<span class="visible-sm"></span>
+			</div>
+			<div class="commentContainer row">
+				<div ng-if="!bdData.length" class="emptyComments"><span>No Boards</span></div>
+				<div ng-if="bdData.length > 0" class="commentDiv col-md-12">
+
+					<a ng-if="bdData.length > 0" class="commentItem" data-index="{{board.id}}" id="{{board.id}}" ng-repeat="board in bdData | orderBy:'pos':false" style="cursor: pointer;" ng-href="/#list/{{board.id}}">
+						<span class="comment" style="padding: 0;">
+							<!-- <span class="tick">"</span>  -->
+							<!-- <textarea class="commentContent contentEditor"></textarea> -->
+							<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
+							<span class="commentContent">{{board.name}}</span>
+							<!-- <span class="tick">"</span> -->
+						</span>
+						<!-- <span class="timeMod">moved: <span ng-hide="card.actions.length">not yet</span><time ng-show="card.actions.length" am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time></span> -->
+						<div class="clearfix"></div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

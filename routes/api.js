@@ -6,6 +6,11 @@ var Post = mongoose.model('Post');
 var bCrypt = require('bcrypt-nodejs');
 var Trello = require('node-trello');
 var async = require('async');
+
+var key = '52af2d4bfeaa723904bd8d01a6101acd';
+var token = 'c0e7b0d4185faa441c89000d867b36bd98b3335ceb5cbc43c5cf0a7842c24abc';
+var t = new Trello(key, token);
+
 //Used for routes that must be authenticated.
 function isAuthenticated(req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler 
@@ -24,37 +29,32 @@ function isAuthenticated(req, res, next) {
   return res.redirect('/#login');
 };
 
-router.route('/trl')
-  .get(function(req, res) {
-    var Trello = require('node-trello');
-    var async = require('async');
-
-    var listArray = [];
-    var t = new Trello('52af2d4bfeaa723904bd8d01a6101acd', 'c0e7b0d4185faa441c89000d867b36bd98b3335ceb5cbc43c5cf0a7842c24abc');
+router.route('/board')
+	.get(function(req,res){
+		var listBoard = [];
     t.get('/1/members/me/boards/', {}, function(err, data) {
-      async.eachSeries(data, function(board, nextBoard) {
-        if (board.name == 'Recruitment 2017') {
-          t.get('/1/boards/' + board.id + '/lists', { cards: 'all' }, function(err, lists) {
-            async.eachSeries(lists, function(list, nextList) {
-              var listItem = list;
-              var cards = list.cards;
-              listItem.cards = [];
-              async.eachSeries(cards, function(card, nextCard) {
-                t.get('/1/cards/' + card.id, { actions: 'updateCard:idList' }, function(err, item) {
-                  listItem.cards.push(item);
-                  nextCard();
-                });
-              }, function(err) {
-                listArray.push(listItem);
-                nextList()
-              });
-            }, function(err) {
-              nextBoard();
-            });
+      return res.send(data);
+    	console.log(data);
+    });
+	})
+
+router.route('/list/:id')
+  .get(function(req, res) {
+    var listArray = [];
+    t.get('/1/boards/' + req.params.id + '/lists', { cards: 'all' }, function(err, lists) {
+      async.eachSeries(lists, function(list, nextList) {
+        var listItem = list;
+        var cards = list.cards;
+        listItem.cards = [];
+        async.eachSeries(cards, function(card, nextCard) {
+          t.get('/1/cards/' + card.id, { actions: 'updateCard:idList' }, function(err, item) {
+            listItem.cards.push(item);
+            nextCard();
           });
-        } else {
-          nextBoard();
-        }
+        }, function(err) {
+          listArray.push(listItem);
+          nextList()
+        });
       }, function(err) {
         if (err) {
           return res.send(err);
