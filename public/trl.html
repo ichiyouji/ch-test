@@ -14,7 +14,7 @@
 							<span style="font-size: 14px;">total: {{getTotal(list.id)}}</span>
 						</div>
 					</div>
-					<div ng-if="!list.cards.length" class="emptyComments"><span>No Chirps Yet</span></div>
+					<div ng-if="!list.cards.length" class="commentItem"><span class="comment">No Data</span></div>
 
 					<div ng-if="list.cards.length > 0" class="commentItem" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.cards | orderBy:'pos':false" draggable>
 						<span class="comment">
