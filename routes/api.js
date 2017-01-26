@@ -6,10 +6,19 @@ var Post = mongoose.model('Post');
 var bCrypt = require('bcrypt-nodejs');
 var Trello = require('node-trello');
 var async = require('async');
+var OAuth = require('oauth');
 
 var key = '52af2d4bfeaa723904bd8d01a6101acd';
-var token = 'c0e7b0d4185faa441c89000d867b36bd98b3335ceb5cbc43c5cf0a7842c24abc';
-var t = new Trello(key, token);
+var OAuthSecret = 'c0b26eeb1213a94763cb1d766667cbb875a70075376dfcaaae76036a443af261';
+// var token = 'c0e7b0d4185faa441c89000d867b36bd98b3335ceb5cbc43c5cf0a7842c24abc';
+var oauth = new OAuth.OAuth('https://trello.com/1/OAuthGetRequestToken','https://trello.com/1/OAuthGetAccessToken',key,OAuthSecret,'1.0',undefined,'PLAINTEXT');
+
+var t;
+oauth.getOAuthRequestToken(function (error, oauth_token, oauth_secret, results) {
+	var t = new Trello(key, oauth_token);
+  console.log(oauth_token)
+  console.log(oauth_secret)
+})
 
 //Used for routes that must be authenticated.
 function isAuthenticated(req, res, next) {
@@ -29,6 +38,19 @@ function isAuthenticated(req, res, next) {
   return res.redirect('/#login');
 };
 
+function isAuthTrello(req,res,next){
+	oauth.getOAuthRequestToken(function (error, oauth_token, oauth_secret, results) {
+	  if (!error) {
+			var t = new Trello(key, oauth_token);
+		  console.log(oauth_token)
+		  console.log(oauth_secret)
+	    return next();
+	  }
+	  console.log(error);
+	});
+}
+router.use('/board', isAuthTrello);
+
 router.route('/board')
 	.get(function(req,res){
 		var listBoard = [];
@@ -38,7 +60,7 @@ router.route('/board')
     });
 	})
 
-router.route('/list/:id')
+router.route('/board/list/:id')
   .get(function(req, res) {
     var listArray = [];
     t.get('/1/boards/' + req.params.id + '/lists', { cards: 'all' }, function(err, lists) {

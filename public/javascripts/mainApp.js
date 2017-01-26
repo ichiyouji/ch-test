@@ -63,12 +63,19 @@ app.run(function($rootScope, $location, $http, postService) {
 })
 
 app.controller('bdCtrl', function($scope, $compile, $http){
-  
-  $http.get('/api/board/').success(function(data) {
-    $scope.bdData = data;
-    // console.log($scope.trlData);
-  });
   $scope.bdData = [];
+
+  // Trello.authorize({
+  //     type: "popup",
+  //     success: onAuthorize
+  // })
+    $http.get('/api/board/').success(function(data) {
+      $scope.bdData = data;
+      // console.log($scope.trlData);
+    });
+  // var onAuthorize = function(){
+    
+  // }
 })
 
 app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
@@ -104,8 +111,8 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
   }
   $scope.currentListIndex = 0;
 
-  $http.get('/api/list/'+$routeParams.id).success(function(data) {
-    $scope.trlData = data;
+  $http.get('/api/board/list/'+$routeParams.id).success(function(data) {
+    // $scope.trlData = data;
     // console.log($scope.trlData);
   });
 
