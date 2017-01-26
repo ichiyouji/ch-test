@@ -17,8 +17,8 @@ body{
 	background: #f1f1f1;
 }*/
 .wrap{
-	padding-top: 120px;
-	padding-bottom: 64px;
+	padding-top: 110px;
+	padding-bottom: 32px;
 }
 .btn{
 	/*background: #97cbff;*/
@@ -327,10 +327,10 @@ nav .container{
 
 }
 .commentWrap .commentContainer{
-	border: 1px solid #f7b8a5;
+	border: 1px solid #ccc;
 	border-radius: 6px;
 	padding: 12px;
-	box-shadow: 0 0 3px #f7b8a5;
+	box-shadow: 0 0 6px #ccc inset;
 	min-height: 240px;
 	background: #fff;
 	/*background: #ffded4;*/
@@ -359,6 +359,7 @@ nav .container{
 	margin-right: auto;
 }
 
+
 .commentWrap .commentDiv{
 	padding: 16px;
 	/*margin: 8px;*/
@@ -368,9 +369,30 @@ nav .container{
 }
 
 .commentWrap .commentDiv .cmtTitle{
-	font-size: 22px;
-	color: #888;
+	font-size: 18px;
+	color: #666;
 	text-indent: 12px;
+}
+
+
+.commentWrap .commentContainer.lists{
+	overflow: auto;
+	/*overflow-x: auto;*/
+	max-height: 420px;
+	white-space: nowrap;
+	background: #EAEFE9;
+	/*background: #fbb69b;*/
+}
+.commentWrap .commentDiv.list{
+	display: inline-block;
+	vertical-align: top;
+	float: none;
+	white-space: normal;
+	margin: 0 4px;
+	box-shadow: 1px 1px 4px #ccc;
+    border: 1px solid #ddd;
+    background: #fff;
+    width: auto;
 }
 
 .commentWrap .commentItem .editBtn{
@@ -382,11 +404,25 @@ nav .container{
 	position: relative;
 	display: block;
 	color: #888;
-	padding: 6px 12px;
+	padding: 8px 12px;
 	/*margin: 4px;*/
 	margin: 8px 2px;
 	border: 1px solid #ccc;
+	/*box-shadow: 1px 1px 4px 2px #ccc;*/
 	background: #fff;
+	/*border-radius: 8px;*/
+}
+.commentWrap .list .commentItem{
+	position: relative;
+	display: block;
+	color: #888;
+	padding: 12px 12px;
+	/*margin: 4px;*/
+	margin: 16px 2px;
+	border: 1px solid #ccc;
+	/*box-shadow: 1px 1px 4px 2px #ccc;*/
+	background: #fff;
+	/*border-radius: 8px;*/
 }
 .commentWrap .commentItem:first-child{
 	border-top-right-radius: 6px;
@@ -402,13 +438,16 @@ nav .container{
 .commentWrap .commentItem:nth-child(even){
 	background: #f4f7f1;
 }
+.commentWrap .list .commentItem{
+	background: #f4f7f1;
+}
 .commentWrap .commentItem span{
 	/*display: block;*/
 }
 .commentWrap .commentItem .userName{
 	/*display: block;*/
 	font-size: 14px;
-	color: #aaa;
+	color: #888;
 }
 .commentWrap .commentItem .userName .name{
 	color: #666;
@@ -442,16 +481,21 @@ nav .container{
 	text-align: left;
     color: #888;
     font-weight: lighter;
-    font-size: 14px;
     margin-top: 6px;
 }
 .commentWrap .commentItem .lab.history span.hist{
+    display: block;
+    padding: 4px 8px;
+    border-top: 1px solid #ccc;
+    font-size: 13px;
+    margin: 0 -8px;
+}
+.commentWrap .commentItem .lab.history span.hist>span{
 	display: block;
-	margin-top: 4px;
 }
 .commentWrap .commentItem .lab.history span.name{
 	font-weight: bold;
-	color: #68a;
+	color: #69b;
 }
 .commentWrap .commentItem .lab.history span.total{
 	font-weight: bold;
@@ -464,8 +508,29 @@ nav .container{
 .commentWrap .commentItem .comment{
 	display: block;
 	font-size: 14px;
-	padding-right: 50px;
+	/*padding-right: 50px;*/
+	/*margin: -12px -12px 0px;
+	padding: 12px 12px;
+	border-bottom: 2px solid #fbb69b;
+	background: #fafafa;
+	min-height: 72px;*/
+	/*font-weight: bolder;*/
+	/*border-radius: 8px 8px 0 0;*/
 }
+.commentWrap .list .commentItem .comment{
+	display: block;
+	font-size: 14px;
+	/*padding-right: 50px;*/
+	margin: -12px -12px 8px;
+	padding: 12px 12px;
+	border-bottom: 2px solid #fbb69b;
+	/*background: #fafafa;*/
+	color: #666;
+	/*min-height: 72px;*/
+	/*font-weight: bolder;*/
+	/*border-radius: 8px 8px 0 0;*/
+}
+
 .commentWrap .commentItem .comment .contentEditor{
 	/*height: 36px;*/
 	font-size: 12px;
