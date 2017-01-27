@@ -15,8 +15,8 @@ var authenticate = require('./routes/authenticate')(passport);
 var users = require('./routes/users')(passport);
 var mongoose = require('mongoose');
 
-// mongoose.connect("mongodb://admin:admin@ds117839.mlab.com:17839/mtest-1");
-mongoose.connect("mongodb://localhost:27017/chirp-test");
+mongoose.connect("mongodb://admin:admin@ds117839.mlab.com:17839/mtest-1");
+// mongoose.connect("mongodb://localhost:27017/chirp-test");
 
 var app = express();
 
