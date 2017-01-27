@@ -17,6 +17,7 @@ var loginCallback = 'http://localhost:3000/api/authTrello'
 
 var key = '52af2d4bfeaa723904bd8d01a6101acd';
 var secret = 'c0b26eeb1213a94763cb1d766667cbb875a70075376dfcaaae76036a443af261';
+var expiry = '1hour';
 var token;
 var auth_secret;
 var oauth = new OAuth.OAuth(requestURL,accessURL,key,secret,'1.0',loginCallback,'HMAC-SHA1');
@@ -47,7 +48,7 @@ function isAuthTrello(req,res,next){
 		  if (!error) {
 				// var t = new Trello(key, oauth_token);
 				auth_secret = oauth_secret
-				var resp = {auth:true, url:authorizeURL+'?oauth_token='+oauth_token+'&name='+appName}
+				var resp = {auth:true, url:authorizeURL+'?oauth_token='+oauth_token+'&name='+appName+'&expires='+expiry}
 	  		return res.send(resp);
 		    // return next();
 		  }

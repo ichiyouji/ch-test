@@ -11,7 +11,8 @@
 					<div class="cmtTitle">
 						<span>{{list.name}} {{savedListIndex($index)}}</span>
 						<div>
-							<span style="font-size: 14px;">total: {{getTotal(list.id)}}</span>
+							<!-- <span style="font-size: 14px;">total: {{getTotal(list.id)}}</span> -->
+							<span style="font-size: 14px;">total: {{list.total.format}}</span>
 						</div>
 					</div>
 					<div ng-if="!list.cards.length" class="commentItem"><span class="comment">No Data</span></div>
@@ -30,13 +31,24 @@
 							<time am-time-ago='toDate(card.id)'></time>
 						</span>
 
-						<span class="lab">
+						<span class="lab" ng-if="card.actions.length">
 							<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
 							<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
-							<span class="thin">Time Spent</span> {{getTotalSpend($index, list.id)}}
+							<span class="thin">Time Spent</span> {{card.latest.total.format}}
 						</span>
 
-						<listhistory ng-show="card.actions.length" class="lab history" list="list" index="{{$index}}"></listhistory>
+						<div class="lab history" ng-if="card.actions.length">
+							<span>history: </span>
+							<span class="hist" ng-repeat="h in card.history">
+								<span>
+									in <span class="name">{{h.name}}</span>
+								</span>
+								<span>
+									&emsp;for <span class="total">{{h.total.format}}</span>
+								</span>
+							</span>
+						</div>
+						<!-- <listhistory ng-show="card.actions.length" class="lab history" list="list" index="{{$index}}"></listhistory> -->
 
 						<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
 							<!-- <edit-btn></edit-btn>

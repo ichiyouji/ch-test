@@ -105,12 +105,116 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
     // console.log(s+', '+p+', '+e+', '+d);
     return d.toISOString();
   }
+
   $scope.currentListIndex = 0;
 
+  var getTotalSpend = function(card, idList) {
+    //alert(idCard + " // " + idList);
+    //console.log(idCard, b);
+    if (!card.actions.length)
+      return "0";
+    else {
+      var currentList = "";
+      var currentTime = new Date();
+      var spendTime = 0;
+      var tempSpend = "";
+      var recordDate = "";
+      var lastPosition = ""; // temp variable to capture very last LIST before it moved to another list
+      var i = 0;
+      card.actions.forEach(function(entry) {
+        // i++;
+        if (currentList !== entry.data.listAfter.id && entry.data.listAfter.id === idList) {
+          tempSpend = currentTime.getTime() - new Date(entry.date).getTime();
+          currentTime = new Date(entry.date);
+          spendTime = parseInt(spendTime) + parseInt(tempSpend);
+          //console.log("OK", entry.data.listAfter.id, new Date(entry.date));
+          //console.log("SPEND", (tempSpend/1000).toString().toHHMMSS());
+        } else {
+          currentTime = new Date(entry.date);
+          //console.log(entry.data.listAfter.id, new Date(entry.date));
+        }
+        lastPosition = entry.data.listBefore.id;
+      });
+
+      //calc spend time from the first time card created until moved to the second list.
+      if (lastPosition === idList) {
+        
+        var e = card.id;
+        var s = e.substring(0, 8);
+        var p = parseInt(s, 16);
+        var e = p * 1000;
+        var d = new Date(e);
+
+        tempSpend = currentTime.getTime() - d.getTime();
+        spendTime = parseInt(spendTime) + parseInt(tempSpend);
+      }
+
+      //console.log($scope.trlData[$scope.currentListIndex].cards[idCard].name, (spendTime/1000).toString().toHHMMSS());
+      var time = {
+        orig: spendTime,
+        format: spendTime.toString().toTimeFormat()
+      }
+      return time;
+    }
+  }
+  
   $http.get('/api/board/list/'+$routeParams.id).success(function(data) {
-    $scope.trlData = data;
-    // console.log($scope.trlData);
+    var listData = [];
+    var dist = {};
+    data.forEach(function(list, index){
+      var nList;
+      if (list.cards.length) {
+        nList = {
+          name: list.name,
+          id: list.id,
+          cards:[]
+        }
+        list.cards.forEach(function(card, indexCard){
+          card.history = [];
+          var history = [];
+          if (card.actions.length) {
+            card.actions.forEach(function(entry,indexAction) {
+              if(history.indexOf() < 0){
+                history[entry.data.listAfter.id] = {
+                  name: entry.data.listAfter.name,
+                  id: entry.data.listAfter.id,
+                  total: getTotalSpend(card, entry.data.listAfter.id)
+                };
+              }
+              if (indexAction == card.actions.length - 1) {
+                history[entry.data.listBefore.id] = {
+                  name: entry.data.listBefore.name,
+                  id: entry.data.listBefore.id,
+                  total: getTotalSpend(card, entry.data.listBefore.id)
+                };
+              }
+            });
+            for(h in history){
+              card.history.push(history[h]);
+              if (dist[h]) {
+                dist[h].total.orig += history[h].total.orig;
+                dist[h].total.format = dist[h].total.orig.toString().toTimeFormat();
+              }else{
+                dist[h] = history[h];
+              }
+            }
+            card.latest = card.history[0];
+          }
+          nList.cards.push(card);
+        });
+      }
+      listData.push(nList);
+    });
+
+    listData.forEach(function(elem, index){
+      listData[index].total = dist[elem.id].total;
+    });
+    
+    $scope.trlData = listData;
+      // listData = data;
+    console.log($scope.trlData);
   });
+
 
   $scope.getDistinctCardList = function(idCard, idList) {
   	if (!$scope.trlData[$scope.currentListIndex].cards[idCard].actions.length)
@@ -124,7 +228,7 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
       			id: entry.data.listAfter.id,
       			total: $scope.getTotalSpend(idCard, entry.data.listAfter.id)
       		};
-	    }
+        }
       });
       // console.log(listArray);
     }
@@ -311,7 +415,6 @@ app.directive('listhistory', function($compile){
       if (!$scope.list.cards[$attrs.index].actions.length)
         return "0";
       else {
-        $scope.list.cards[$attrs.index].actions
         var item = '<span>history:</span>';
         $scope.list.cards[$attrs.index].actions.forEach(function(entry,index) {
           if($scope.listArray.indexOf() < 0){
