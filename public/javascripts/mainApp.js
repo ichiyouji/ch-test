@@ -62,10 +62,14 @@ app.run(function($rootScope, $location, $http, postService) {
   });
 })
 
-app.controller('bdCtrl', function($scope, $compile, $http){
+app.controller('bdCtrl', function($scope, $compile, $http, $window){
   $scope.bdData = [];
   $http.get('/api/board/').success(function(data) {
-    $scope.bdData = data;
+    if (data.auth) {
+      $window.location.href = data.url;
+    }else{
+      $scope.bdData = data;
+    }
     // console.log($scope.trlData);
   });
 })

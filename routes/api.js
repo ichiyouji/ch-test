@@ -11,13 +11,15 @@ var OAuth = require('oauth');
 var requestURL = 'https://trello.com/1/OAuthGetRequestToken';
 var accessURL = 'https://trello.com/1/OAuthGetAccessToken';
 var authorizeURL = 'https://trello.com/1/OAuthAuthorizeToken';
-var appName = "My Trello";
-var loginCallback = 'https://fierce-atoll-33773.herokuapp.com/#/'
+var appName = "Trellox";
+// var loginCallback = 'https://fierce-atoll-33773.herokuapp.com/#/trello_cb'
+var loginCallback = 'http://localhost:3000/api/authTrello'
 
 var key = '52af2d4bfeaa723904bd8d01a6101acd';
 var secret = 'c0b26eeb1213a94763cb1d766667cbb875a70075376dfcaaae76036a443af261';
-// var token = 'c0e7b0d4185faa441c89000d867b36bd98b3335ceb5cbc43c5cf0a7842c24abc';
-var oauth = new OAuth.OAuth(requestURL,accessURL,key,secret,'1.0',undefined,'PLAINTEXT');
+var token;
+var auth_secret;
+var oauth = new OAuth.OAuth(requestURL,accessURL,key,secret,'1.0',loginCallback,'HMAC-SHA1');
 
 var t;
 
@@ -40,17 +42,21 @@ function isAuthenticated(req, res, next) {
 };
 
 function isAuthTrello(req,res,next){
-	console.log('auth')
-	oauth.getOAuthRequestToken(function (error, oauth_token, oauth_secret, results) {
-	console.log('auth')
-	  if (!error) {
-			// var t = new Trello(key, oauth_token);
-  		return res.redirect(authorizeURL+'?oauth_token='+oauth_token+'&name='+appName);
-	    // return next();
-	  }
-  	return res.redirect('/#error');
-	  console.log(error);
-	});
+	if (!token) {
+		oauth.getOAuthRequestToken(function (error, oauth_token, oauth_secret, results) {
+		  if (!error) {
+				// var t = new Trello(key, oauth_token);
+				auth_secret = oauth_secret
+				var resp = {auth:true, url:authorizeURL+'?oauth_token='+oauth_token+'&name='+appName}
+	  		return res.send(resp);
+		    // return next();
+		  }
+	  	return res.redirect('/#error');
+		  console.log(error);
+		});
+	}else{
+		return next();
+	}
 }
 router.use('/board', isAuthTrello);
 
@@ -61,6 +67,18 @@ router.route('/board')
       return res.send(data);
     	console.log(data);
     });
+	})
+
+router.route('/authTrello')
+	.get(function(req,res){
+		console.log(req.query);
+		oauth.getOAuthAccessToken(req.query.oauth_token, auth_secret, req.query.oauth_verifier,function (error, accessToken, accessTokenSecret, results) {
+      console.log(accessToken)
+      console.log(accessTokenSecret)
+      t = new Trello(key,accessToken);  
+      token = accessToken;  
+  		return res.redirect('/#/');
+    })
 	})
 
 router.route('/board/list/:id')
