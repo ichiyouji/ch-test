@@ -75,6 +75,8 @@ app.controller('bdCtrl', function($scope, $compile, $http, $window){
 })
 
 app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
+  var nd = new Date();
+
   String.prototype.toTimeFormat = function() {
     seconds = Math.floor(parseInt(this) / 1000);
     minutes = Math.floor(seconds / 60);
@@ -160,7 +162,7 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
   
   $http.get('/api/board/list/'+$routeParams.id).success(function(data) {
     var listData = [];
-    var dist = {};
+    var dist = [];
     data.forEach(function(list, index){
       var nList;
       if (list.cards.length) {
@@ -195,10 +197,26 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
                 dist[h].total.orig += history[h].total.orig;
                 dist[h].total.format = dist[h].total.orig.toString().toTimeFormat();
               }else{
-                dist[h] = history[h];
+                dist[h] = {
+                  total: {
+                    orig: parseInt(history[h].total.orig)
+                  }
+                };
               }
+              // console.log(history[h]);
             }
             card.latest = card.history[0];
+          }else{
+            if (dist[card.idList]) {
+              dist[card.idList].total.orig += nd - new Date(parseInt((card.id).substring(0,8),16)*1000);
+              dist[card.idList].total.format = dist[h].total.orig.toString().toTimeFormat();
+            }else{
+              dist[card.idList] = {
+                total: {
+                  orig: nd - new Date(parseInt((card.id).substring(0,8),16)*1000)
+                }
+              };
+            }
           }
           nList.cards.push(card);
         });
