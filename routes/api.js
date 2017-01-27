@@ -12,8 +12,8 @@ var requestURL = 'https://trello.com/1/OAuthGetRequestToken';
 var accessURL = 'https://trello.com/1/OAuthGetAccessToken';
 var authorizeURL = 'https://trello.com/1/OAuthAuthorizeToken';
 var appName = "Trellox";
-// var loginCallback = 'https://fierce-atoll-33773.herokuapp.com/#/trello_cb'
-var loginCallback = 'http://localhost:3000/api/authTrello'
+var loginCallback = 'https://fierce-atoll-33773.herokuapp.com/api/authTrello'
+// var loginCallback = 'http://localhost:3000/api/authTrello'
 
 var key = '52af2d4bfeaa723904bd8d01a6101acd';
 var secret = 'c0b26eeb1213a94763cb1d766667cbb875a70075376dfcaaae76036a443af261';
