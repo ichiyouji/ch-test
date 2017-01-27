@@ -209,7 +209,7 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
           }else{
             if (dist[card.idList]) {
               dist[card.idList].total.orig += nd - new Date(parseInt((card.id).substring(0,8),16)*1000);
-              dist[card.idList].total.format = dist[h].total.orig.toString().toTimeFormat();
+              dist[card.idList].total.format = dist[card.idList].total.orig.toString().toTimeFormat();
             }else{
               dist[card.idList] = {
                 total: {
