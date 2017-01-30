@@ -164,13 +164,12 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
     var listData = [];
     var dist = [];
     data.forEach(function(list, index){
-      var nList;
+      var nList = {
+        name: list.name,
+        id: list.id,
+        cards:[]
+      }
       if (list.cards.length) {
-        nList = {
-          name: list.name,
-          id: list.id,
-          cards:[]
-        }
         list.cards.forEach(function(card, indexCard){
           card.history = [];
           var history = [];
@@ -227,26 +226,35 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
     });
 
     listData.forEach(function(elem, index){
-      listData[index].total = dist[elem.id].total;
-      var totalList = 0;
-      var totalListFormat = '';
-      elem.cards.forEach(function(card, cardIndex){
-        if (card.latest) {
-          totalList += card.latest.total.orig
-        }else{
-          totalList += nd - new Date(parseInt((card.id).substring(0,8),16)*1000)
+      if (dist[elem.id]) {
+        listData[index].total = dist[elem.id].total;
+        var totalList = 0;
+        var totalListFormat = '';
+        elem.cards.forEach(function(card, cardIndex){
+          if (card.latest) {
+            totalList += card.latest.total.orig
+          }else{
+            totalList += nd - new Date(parseInt((card.id).substring(0,8),16)*1000)
+          }
+        })
+        listData[index].total_list = {
+          orig : totalList,
+          format : totalList.toString().toTimeFormat()
         }
-      })
-      listData[index].total_list = {
-        orig : totalList,
-        format : totalList.toString().toTimeFormat()
+      }else{
+        listData[index].total = {
+          orig : 0,
+          format : (0).toString().toTimeFormat()
+        }
+        listData[index].total_list = {
+          orig : 0,
+          format : (0).toString().toTimeFormat()
+        }
       }
-
     });
     
     $scope.trlData = listData;
       // listData = data;
-    console.log($scope.trlData);
   });
 
 
