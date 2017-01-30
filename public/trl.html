@@ -12,7 +12,10 @@
 						<span>{{list.name}} {{savedListIndex($index)}}</span>
 						<div>
 							<!-- <span style="font-size: 14px;">total: {{getTotal(list.id)}}</span> -->
-							<span style="font-size: 14px;">total: {{list.total.format}}</span>
+							<span style="font-size: 14px;">total Overall: {{list.total.format}}</span>
+						</div>
+						<div>
+							<span style="font-size: 14px;">total in List: {{list.total_list.format}}</span>
 						</div>
 					</div>
 					<div ng-if="!list.cards.length" class="commentItem"><span class="comment">No Data</span></div>

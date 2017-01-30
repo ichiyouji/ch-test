@@ -211,9 +211,11 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
               dist[card.idList].total.orig += nd - new Date(parseInt((card.id).substring(0,8),16)*1000);
               dist[card.idList].total.format = dist[card.idList].total.orig.toString().toTimeFormat();
             }else{
+              var thisDiff = nd - new Date(parseInt((card.id).substring(0,8),16)*1000)
               dist[card.idList] = {
                 total: {
-                  orig: nd - new Date(parseInt((card.id).substring(0,8),16)*1000)
+                  orig: thisDiff,
+                  format: thisDiff.toString().toTimeFormat()
                 }
               };
             }
@@ -226,6 +228,20 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
 
     listData.forEach(function(elem, index){
       listData[index].total = dist[elem.id].total;
+      var totalList = 0;
+      var totalListFormat = '';
+      elem.cards.forEach(function(card, cardIndex){
+        if (card.latest) {
+          totalList += card.latest.total.orig
+        }else{
+          totalList += nd - new Date(parseInt((card.id).substring(0,8),16)*1000)
+        }
+      })
+      listData[index].total_list = {
+        orig : totalList,
+        format : totalList.toString().toTimeFormat()
+      }
+
     });
     
     $scope.trlData = listData;
