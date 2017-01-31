@@ -550,7 +550,7 @@ nav .container{
 }
 
 .commentWrap .list .commentItem.ghost{
-	background: rgba(0,0,0,0.2);
+	background: rgba(0,0,0,0.1);
 }
 .commentWrap .list .commentItem.ghost span{
 	/*color: #fff;*/
