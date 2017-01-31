@@ -11,7 +11,7 @@ var OAuth = require('oauth');
 var requestURL = 'https://trello.com/1/OAuthGetRequestToken';
 var accessURL = 'https://trello.com/1/OAuthGetAccessToken';
 var authorizeURL = 'https://trello.com/1/OAuthAuthorizeToken';
-var appName = "Trellox";
+var appName = "TrelloX";
 var loginCallback = 'https://fierce-atoll-33773.herokuapp.com/api/authTrello'
 // var loginCallback = 'http://localhost:3000/api/authTrello'
 
@@ -60,11 +60,15 @@ function isAuthTrello(req,res,next){
 	}
 }
 router.use('/board', isAuthTrello);
+router.use('/board/list/', isAuthTrello);
 
 router.route('/board')
 	.get(function(req,res){
 		var listBoard = [];
     t.get('/1/members/me/boards/', {}, function(err, data) {
+      if (err) {
+        token = '';
+      }
       return res.send(data);
     	console.log(data);
     });
@@ -77,7 +81,7 @@ router.route('/authTrello')
       console.log(accessToken)
       console.log(accessTokenSecret)
       t = new Trello(key,accessToken);  
-      token = accessToken;  
+      token = accessToken;
   		return res.redirect('/#/');
     })
 	})
@@ -101,6 +105,7 @@ router.route('/board/list/:id')
         });
       }, function(err) {
         if (err) {
+        	token = '';
           return res.send(err);
         }
         return res.send(listArray);

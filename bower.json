@@ -1,0 +1,21 @@
+{
+  "name": "bower",
+  "description": "chirp",
+  "main": "",
+  "authors": [
+    "ichijou"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ichiyouji/ch-test",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-google-chart": "^0.1.0"
+  }
+}

@@ -7,104 +7,106 @@
 			</div>
 			<div class="commentContainer lists">
 				<div ng-if="!trlData.length" class="emptyComments"><span>No Feeds Yet</span></div>
-				<div ng-if="trlData.length > 0" class="commentDiv list" data-index="{{list.id}}" id="{{list.id}}" ng-repeat="list in trlData | orderBy:'pos':false" droppable>
-					<div class="cmtTitle">
-						<span>{{list.name}} {{savedListIndex($index)}}</span>
-							<div>
-								<!-- <span style="font-size: 14px;">total: {{getTotal(list.id)}}</span> -->
-							</div>
-							<div></div>
-					</div>
-					<div class="cardCol">
-						<div class="cardCont">
-							<span class="totalTime" style="font-size: 14px;">total Overall: {{list.total.format}}</span>
-							<div>
-								<div ng-if="list.ghost.length > 0" class="commentItem ghost" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.ghost | orderBy:'pos':false" draggable>
-									<span class="comment">
-										<!-- <span class="tick">"</span>  -->
-										<!-- <textarea class="commentContent contentEditor"></textarea> -->
-										<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
-										<span class="commentContent">{{card.card_name}}</span>
-										<!-- <span class="tick">"</span> -->
-									</span>
-									<!-- <span class="timeMod">moved: <span ng-hide="card.actions.length">not yet</span><time ng-show="card.actions.length" am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time></span> -->
-									<span class="userName">
-										<span>added: </span>
-										<time am-time-ago='toDate(card.card_id)'></time>
-									</span>
-
-									<span class="lab">
-										<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
-										<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
-										<span class="thin">Time Spent</span> {{card.total.format}}
-									</span>
-
-									<div class="lab history" ng-if="card.actions.length">
-										<span>history: </span>
-										<span class="hist" ng-repeat="h in card.history">
-											<span>
-												in <span class="name">{{h.name}}</span>
-											</span>
-											<span>
-												&emsp;for <span class="total">{{h.total.format}}</span>
-											</span>
-										</span>
-									</div>
-									<!-- <listhistory ng-show="card.actions.length" class="lab history" list="list" index="{{$index}}"></listhistory> -->
-
-									<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
-										<!-- <edit-btn></edit-btn>
-										<del-btn></del-btn> -->
-									</button-group>
-									<div class="clearfix"></div>
+				<div ng-if="trlData.length > 0"  data-index="{{list.id}}" id="{{list.id}}" ng-repeat="list in trlData | orderBy:'pos':false" droppable>
+					<div class="commentDiv list">
+						<div class="cmtTitle">
+							<span>{{list.name}} {{savedListIndex($index)}}</span>
+								<div>
+									<!-- <span style="font-size: 14px;">total: {{getTotal(list.id)}}</span> -->
 								</div>
-							</div>
+								<div></div>
 						</div>
-						<div class="cardCont">
-							<span class="totalTime" style="font-size: 14px;">total Current: {{list.total_list.format}}</span>
-							<div ng-if="!list.cards.length" class="commentItem"><span class="comment">No Data</span></div>
-							<div>
-								<div ng-if="list.cards.length > 0" class="commentItem" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.cards | orderBy:'pos':false" draggable>
-									<span class="comment">
-										<!-- <span class="tick">"</span>  -->
-										<!-- <textarea class="commentContent contentEditor"></textarea> -->
-										<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
-										<span class="commentContent">{{card.name}}</span>
-										<!-- <span class="tick">"</span> -->
-									</span>
-									<!-- <span class="timeMod">moved: <span ng-hide="card.actions.length">not yet</span><time ng-show="card.actions.length" am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time></span> -->
-									<span class="userName">
-										<span>added: </span>
-										<time am-time-ago='toDate(card.id)'></time>
-									</span>
-
-									<span class="lab" ng-if="card.actions.length">
-										<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
-										<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
-										<span class="thin">Time Spent</span> {{card.latest.total.format}}
-									</span>
-
-									<div class="lab history" ng-if="card.actions.length">
-										<span>history: </span>
-										<span class="hist" ng-repeat="h in card.history">
-											<span>
-												in <span class="name">{{h.name}}</span>
-											</span>
-											<span>
-												&emsp;for <span class="total">{{h.total.format}}</span>
-											</span>
+						<div class="cardCol">
+							<div class="cardCont">
+								<span class="totalTime" style="font-size: 14px;">total Overall: {{list.total.format}}</span>
+								<div>
+									<div ng-if="list.ghost.length > 0" class="commentItem ghost" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.ghost | orderBy:'pos':false" draggable>
+										<span class="comment">
+											<!-- <span class="tick">"</span>  -->
+											<!-- <textarea class="commentContent contentEditor"></textarea> -->
+											<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
+											<span class="commentContent">{{card.card_name}}</span>
+											<!-- <span class="tick">"</span> -->
 										</span>
-									</div>
-									<!-- <listhistory ng-show="card.actions.length" class="lab history" list="list" index="{{$index}}"></listhistory> -->
+										<!-- <span class="timeMod">moved: <span ng-hide="card.actions.length">not yet</span><time ng-show="card.actions.length" am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time></span> -->
+										<span class="userName">
+											<span>added: </span>
+											<time am-time-ago='toDate(card.card_id)'></time>
+										</span>
 
-									<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
-										<!-- <edit-btn></edit-btn>
-										<del-btn></del-btn> -->
-									</button-group>
-									<div class="clearfix"></div>
+										<span class="lab">
+											<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
+											<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
+											<span class="thin">Time Spent</span> {{card.total.format}}
+										</span>
+
+										<div class="lab history" ng-if="card.actions.length">
+											<span>history: </span>
+											<span class="hist" ng-repeat="h in card.history">
+												<span>
+													in <span class="name">{{h.name}}</span>
+												</span>
+												<span>
+													&emsp;for <span class="total">{{h.total.format}}</span>
+												</span>
+											</span>
+										</div>
+										<!-- <listhistory ng-show="card.actions.length" class="lab history" list="list" index="{{$index}}"></listhistory> -->
+
+										<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
+											<!-- <edit-btn></edit-btn>
+											<del-btn></del-btn> -->
+										</button-group>
+										<div class="clearfix"></div>
+									</div>
 								</div>
 							</div>
+							<div class="cardCont">
+								<span class="totalTime" style="font-size: 14px;">total Current: {{list.total_list.format}}</span>
+								<div ng-if="!list.cards.length" class="commentItem"><span class="comment">No Data</span></div>
+								<div>
+									<div ng-if="list.cards.length > 0" class="commentItem" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.cards | orderBy:'pos':false" draggable>
+										<span class="comment">
+											<!-- <span class="tick">"</span>  -->
+											<!-- <textarea class="commentContent contentEditor"></textarea> -->
+											<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
+											<span class="commentContent">{{card.name}}</span>
+											<!-- <span class="tick">"</span> -->
+										</span>
+										<!-- <span class="timeMod">moved: <span ng-hide="card.actions.length">not yet</span><time ng-show="card.actions.length" am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time></span> -->
+										<span class="userName">
+											<span>added: </span>
+											<time am-time-ago='toDate(card.id)'></time>
+										</span>
 
+										<span class="lab" ng-if="card.actions.length">
+											<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
+											<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
+											<span class="thin">Time Spent</span> {{card.latest.total.format}}
+										</span>
+
+										<div class="lab history" ng-if="card.actions.length">
+											<span>history: </span>
+											<span class="hist" ng-repeat="h in card.history">
+												<span>
+													in <span class="name">{{h.name}}</span>
+												</span>
+												<span>
+													&emsp;for <span class="total">{{h.total.format}}</span>
+												</span>
+											</span>
+										</div>
+										<!-- <listhistory ng-show="card.actions.length" class="lab history" list="list" index="{{$index}}"></listhistory> -->
+
+										<button-group class="btn-group editBtn" ng-show="authenticated && comment.created_by === currentUser">
+											<!-- <edit-btn></edit-btn>
+											<del-btn></del-btn> -->
+										</button-group>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+							</div>
 						</div>
 					</div>
 				</div>
@@ -128,4 +130,5 @@
 			</form>
 		</div>
 	</div>
+	<div google-chart chart="GChartData" style="height:600px; width:100%;"></div>
 </section>

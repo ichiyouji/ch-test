@@ -379,6 +379,8 @@ nav .container{
 }
 .commentWrap .commentDiv .cardCont .totalTime{
 	color: #888;
+	padding: 0 0 8px;
+	border-bottom: 1px solid #ddd;
 }
 .commentWrap .commentDiv .cmtTitle{
 	font-size: 18px;
@@ -408,6 +410,7 @@ nav .container{
     border: 1px solid #ddd;
     background: #fff;
     width: auto;
+    max-height: 100%;
 }
 
 .commentWrap .commentItem .editBtn{
@@ -561,7 +564,8 @@ nav .container{
 }
 .commentWrap .list .commentItem.ghost .comment{
 	/*color: #fff;*/
-	border-color: #8be;
+	/*border-color: #8be;*/
+	border-color: #89a;
 }
 
 
