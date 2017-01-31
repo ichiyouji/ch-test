@@ -211,6 +211,17 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
             }
             card.latest = card.history[0];
           }else{
+            var dd = nd - new Date(parseInt((card.id).substring(0,8),16)*1000); 
+            history[card.idList] = {
+              card_name: card.name,
+              card_id: card.id,
+              name: list.name,
+              id: list.id,
+              total: {
+                orig: dd,
+                format: dd.toString().toTimeFormat()
+              }
+            };
             if (dist[card.idList]) {
               dist[card.idList].total.orig += nd - new Date(parseInt((card.id).substring(0,8),16)*1000);
               dist[card.idList].total.format = dist[card.idList].total.orig.toString().toTimeFormat();
@@ -236,7 +247,6 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
 
       allHistory.forEach(function(hist,histIndex){
         for (h in hist){
-          console.log(listData[index].ghost);
           if (hist[h] && hist[h].id == elem.id) {
             listData[index].ghost.push(hist[h]);
           }
