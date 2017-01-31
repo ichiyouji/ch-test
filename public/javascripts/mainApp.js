@@ -163,6 +163,7 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
   $http.get('/api/board/list/'+$routeParams.id).success(function(data) {
     var listData = [];
     var dist = [];
+    var allHistory = [];
     data.forEach(function(list, index){
       var nList = {
         name: list.name,
@@ -177,6 +178,8 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
             card.actions.forEach(function(entry,indexAction) {
               if(history.indexOf() < 0){
                 history[entry.data.listAfter.id] = {
+                  card_name: card.name,
+                  card_id: card.id,
                   name: entry.data.listAfter.name,
                   id: entry.data.listAfter.id,
                   total: getTotalSpend(card, entry.data.listAfter.id)
@@ -184,6 +187,8 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
               }
               if (indexAction == card.actions.length - 1) {
                 history[entry.data.listBefore.id] = {
+                  card_name: card.name,
+                  card_id: card.id,
                   name: entry.data.listBefore.name,
                   id: entry.data.listBefore.id,
                   total: getTotalSpend(card, entry.data.listBefore.id)
@@ -219,6 +224,7 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
               };
             }
           }
+          allHistory.push(history);
           nList.cards.push(card);
         });
       }
@@ -226,6 +232,17 @@ app.controller('trlCtrl', function($scope, $compile, $http, $routeParams) {
     });
 
     listData.forEach(function(elem, index){
+      listData[index].ghost = [];
+
+      allHistory.forEach(function(hist,histIndex){
+        for (h in hist){
+          console.log(listData[index].ghost);
+          if (hist[h] && hist[h].id == elem.id) {
+            listData[index].ghost.push(hist[h]);
+          }
+        }
+      });
+
       if (dist[elem.id]) {
         listData[index].total = dist[elem.id].total;
         var totalList = 0;

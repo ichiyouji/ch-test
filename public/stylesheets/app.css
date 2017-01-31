@@ -368,6 +368,14 @@ nav .container{
 	/*box-shadow: inset 0 1px 8px 1px rgba(196,94,50,0.2);*/
 }
 
+.commentWrap .commentDiv .cardCont{
+	display: inline-block;
+	vertical-align: top;
+	padding: 8px;
+}
+.commentWrap .commentDiv .cardCont .totalTime{
+	color: #888;
+}
 .commentWrap .commentDiv .cmtTitle{
 	font-size: 18px;
 	color: #666;
@@ -436,9 +444,6 @@ nav .container{
 	background: #fff;
 }
 .commentWrap .commentItem:nth-child(even){
-	background: #f4f7f1;
-}
-.commentWrap .list .commentItem{
 	background: #f4f7f1;
 }
 .commentWrap .commentItem span{
@@ -543,6 +548,15 @@ nav .container{
 	color: #ccc;
 	vertical-align: top;
 }
+
+.commentWrap .list .commentItem.ghost{
+	background: rgba(0,0,0,0.2);
+}
+.commentWrap .list .commentItem.ghost span{
+	/*color: #fff;*/
+}
+
+
 .commentWrap .commentForm{
 	text-align: right;
 	/*padding-top: 12px;*/
