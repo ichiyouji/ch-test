@@ -20,13 +20,16 @@
 							<div class="cardCont">
 								<span class="totalTime" style="font-size: 14px;">total Overall: {{list.total.format}}</span>
 								<div>
-									<div ng-if="list.ghost.length > 0" class="commentItem ghost" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.ghost | orderBy:'pos':false" draggable>
+									<div ng-if="!labelSet || card.card_label_filtered.indexOf(labelSet) != -1" class="commentItem ghost" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.ghost | orderBy:'pos':false">
 										<span class="comment">
 											<!-- <span class="tick">"</span>  -->
 											<!-- <textarea class="commentContent contentEditor"></textarea> -->
 											<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
 											<span class="commentContent">{{card.card_name}}</span>
 											<!-- <span class="tick">"</span> -->
+											<span class="labelCont">
+												<span class="labels label-colored colored-{{l.color}}" ng-repeat="l in card.card_label"></span>
+											</span>
 										</span>
 										<!-- <span class="timeMod">moved: <span ng-hide="card.actions.length">not yet</span><time ng-show="card.actions.length" am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time></span> -->
 										<span class="userName">
@@ -65,13 +68,16 @@
 								<span class="totalTime" style="font-size: 14px;">total Current: {{list.total_list.format}}</span>
 								<div ng-if="!list.cards.length" class="commentItem"><span class="comment">No Data</span></div>
 								<div>
-									<div ng-if="list.cards.length > 0" class="commentItem" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.cards | orderBy:'pos':false" draggable>
+									<div ng-if="!labelSet || card.label_filtered.indexOf(labelSet) != -1" class="commentItem" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.cards | orderBy:'pos':false" data-show="{{card.label_filtered.indexOf(labelSet)}}">
 										<span class="comment">
 											<!-- <span class="tick">"</span>  -->
 											<!-- <textarea class="commentContent contentEditor"></textarea> -->
 											<!-- <textarea class="form-control commentContent contentEditor" ng-keypress="checkEdit($event, $element.target)"></textarea> -->
 											<span class="commentContent">{{card.name}}</span>
 											<!-- <span class="tick">"</span> -->
+											<span class="labelCont">
+												<span class="labels label-colored colored-{{l.color}}" ng-repeat="l in card.labels"></span>
+											</span>
 										</span>
 										<!-- <span class="timeMod">moved: <span ng-hide="card.actions.length">not yet</span><time ng-show="card.actions.length" am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time></span> -->
 										<span class="userName">
@@ -112,22 +118,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="commentForm col-md-4 col-sm-5 col-xs-12" ng-show="authenticated">
-			<div class="itemhead"><span>Submit Chirps</span></div>
-			<form ng-Submit="post()">
-				<div class="form-group">
-					<span>@{{currentUser}} says,</span>
-					<!-- <input required class="form-control" type="text" name="" placeholder="username" ng-model="newComments.username"> -->
-				</div>
-				<div class="form-group">
-					<textarea name="" class="form-control" placeholder="Chirp here . . ." ng-model="newComments.text"></textarea>
-				</div>
-
-				<div class="form-group">
-					<button type="submit" class="btn btn-chirp">CHIRP!</button>
-					<p class="text-error">{{error_message}}</p>
-				</div>
-			</form>
+		<div class="filterLabel label-colored" ng-class="filterLabel">
+			<span class="btn btn-chirp" ng-click="showChart()"><i class="fa fa-bar-chart"></i></span>
+			<select ng-model="labelSet" ng-change="setLabel()">
+				<option value="">all</option>
+				<option ng-repeat="l in labels" value="{{l.id}}" data-color="{{l.color}}" id="{{l.id}}">{{l.name}}</option>
+			</select>
 		</div>
 	</div>
 	<!-- <div google-chart chart="GChartData" style="height:600px; width:100%;"></div> -->

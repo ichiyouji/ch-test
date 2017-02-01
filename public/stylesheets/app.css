@@ -544,6 +544,90 @@ nav .container{
 	/*min-height: 72px;*/
 	/*font-weight: bolder;*/
 	/*border-radius: 8px 8px 0 0;*/
+	position: relative;
+}
+
+.commentWrap .list .commentItem .comment.isLabeled{
+	padding-bottom: 16px;
+}
+
+.commentWrap .list .commentItem .comment .labelCont{
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	flex-direction: row-reverse;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+}
+.commentWrap .list .commentItem .comment .labelCont .labels{
+	flex-grow: 1;
+    flex-basis: 0;
+}
+
+.label-colored{
+	width: 20px;
+	background-color: #B6BBBF;
+	/*border: 1px solid #ddd;*/
+}
+.label-colored.colored-yellow{
+	background-color: #F2D600;
+	/*border: 1px solid #d5bc02;*/
+}
+.label-colored.colored-red{
+	background-color: #EB5A46;
+	/*border: 1px solid #c33824;*/
+}
+.label-colored.colored-green{
+	background-color: #61BD4F;
+	/*border: 1px solid #4ba33a;*/
+}
+.label-colored.colored-orange{
+	background-color: #FFAB4A;
+	/*border: 1px solid #d58e3c;*/
+}
+.label-colored.colored-purple{
+	background-color: #C377E0;
+	/*border: 1px solid #ab5dc8;*/
+}
+.label-colored.colored-blue{
+	background-color: #0079BF;
+	/*border: 1px solid #04639a;*/
+}
+.label-colored.colored-black{
+	background-color: #4d4d4d;
+	/*border: 1px solid #2d2d2d;*/
+}
+.label-colored.colored-pink{
+	background-color: #FF80CE;
+	/*border: 1px solid #d05ba3;*/
+}
+.label-colored.colored-sky{
+	background-color: #00C2E0;
+	/*border: 1px solid #089ab1;*/
+}
+.label-colored.colored-lime{
+	background-color: #51E898;
+	/*border: 1px solid #36bf77;*/
+}
+
+.filterLabel{
+	position: fixed;
+	right: 16px;
+	top: 64px;
+	/*width: 36px;*/
+	/*height: 36px;*/
+	padding: 6px;
+	width: auto;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 1px 1px 4px #ccc;
+}
+.filterLabel select{
+	height: 28px;
+	padding-left: 6px;
 }
 
 .commentWrap .commentItem .comment .contentEditor{
@@ -637,11 +721,4 @@ nav .container{
 }
 .tableCont{
 	
-}
-
-
-@media(max-width:1023px){
-	.wrap{
-		margin: 12px;
-	}
 }
