@@ -1,4 +1,4 @@
-var app = angular.module('myTestApp', ['ngRoute', 'ngResource', 'angularMoment','googlechart']).run(function($rootScope, $http) {
+var app = angular.module('myTestApp', ['ngRoute', 'ngResource', 'angularMoment']).run(function($rootScope, $http) {
   $rootScope.authenticated = false;
   $rootScope.currentUser = '';
   $rootScope.currentUserId = '';
@@ -359,7 +359,7 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
 })
 
 // app.directive('barCharts', function(){
-  
+
 // })
 
 // app.directive('draggable', function(){
