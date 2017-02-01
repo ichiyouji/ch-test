@@ -1,4 +1,21 @@
 <section class="">
+	<div class="chartModal" ng-show="chartFlag">
+		<div class="chartModalCont">
+			<span class="closeModal btn btn-default" ng-click="hideChart()">
+				<i class="fa fa-close"></i>
+			</span>
+			<div class="gChartOpt">
+				<input type="checkbox" name="id" id="id" ng-model="setChartParam.indonesia" ng-change="reChart()">
+				<label for="id" class="btn btn-default btn-sm"><i class="fa fa-check"></i><i class="fa fa-close"></i> Indonesia</label>
+				<input type="checkbox" name="vi" id="vi" ng-model="setChartParam.vietnam" ng-change="reChart()">
+				<label for="vi" class="btn btn-default btn-sm"><i class="fa fa-check"></i><i class="fa fa-close"></i> Vietnam</label>
+				<input type="checkbox" name="ud" id="ud" ng-model="setChartParam.undocumented" ng-change="reChart()">
+				<label for="ud" class="btn btn-default btn-sm"><i class="fa fa-check"></i><i class="fa fa-close"></i> Undocumented</label>
+			</div>
+			<div class="GChart" google-chart chart="GChartData"></div>
+		</div>
+	</div>
+
 	<div class="commentWrap">
 		<div class="commentCont">
 			<div class="itemhead">
@@ -11,10 +28,9 @@
 					<div class="commentDiv list">
 						<div class="cmtTitle">
 							<span>{{list.name}} {{savedListIndex($index)}}</span>
-								<div>
-									<!-- <span style="font-size: 14px;">total: {{getTotal(list.id)}}</span> -->
-								</div>
-								<div></div>
+							<div>
+								<!-- <span style="font-size: 14px;">total: {{getTotal(list.id)}}</span> -->
+							</div>
 						</div>
 						<div class="cardCol">
 							<div class="cardCont">
@@ -119,12 +135,11 @@
 			</div>
 		</div>
 		<div class="filterLabel label-colored" ng-class="filterLabel">
-			<span class="btn btn-chirp" ng-click="showChart()"><i class="fa fa-bar-chart"></i></span>
+			<span class="btn btn-chirp btn-sm" ng-click="showChart()"><i class="fa fa-bar-chart"></i></span>
 			<select ng-model="labelSet" ng-change="setLabel()">
 				<option value="">all</option>
 				<option ng-repeat="l in labels" value="{{l.id}}" data-color="{{l.color}}" id="{{l.id}}">{{l.name}}</option>
 			</select>
 		</div>
 	</div>
-	<!-- <div google-chart chart="GChartData" style="height:600px; width:100%;"></div> -->
 </section>

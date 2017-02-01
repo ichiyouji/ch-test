@@ -1,4 +1,4 @@
-var app = angular.module('myTestApp', ['ngRoute', 'ngResource', 'angularMoment']).run(function($rootScope, $http) {
+var app = angular.module('myTestApp', ['ngRoute', 'ngResource', 'angularMoment','googlechart']).run(function($rootScope, $http) {
   $rootScope.authenticated = false;
   $rootScope.currentUser = '';
   $rootScope.currentUserId = '';
@@ -316,46 +316,137 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
     // console.log(listData);
     // console.log(allLabel);
 
-    // $scope.GData = [
-    //   ['Origin', 'Indonesia', 'Vietnam', 'Undocumented', {role: 'annotation'}]
-    // ];
+    $scope.GData = [
+      ['Origin', 'Indonesia', 'Vietnam', 'Undocumented', {role: 'annotation'}]
+    ];
 
-    // listData.forEach(function(list, indexList){
-    //   var nArray = [list.name,0,0,0,''];
-    //   var check = {indonesia:0, vietnam:0, ud:0};
-    //   list.cards.forEach(function(card, indexCard){
-    //     var is = 0;
-    //     stSelect.forEach(function(e,i){
-    //       if (card.label_filtered_name.indexOf(e) > -1) {
-    //         nArray[i+1] += 1;
-    //         // check[e] += 1;
-    //         is = 1;
-    //       }
-    //     });
-    //     if (!is) {
-    //       // check.ud += 1;
-    //       nArray[stSelect.length+1] += 1;
-    //     }
-    //   })
-    //   $scope.GData.push(nArray);
-    // })
+    listData.forEach(function(list, indexList){
+      var nArray = [list.name,0,0,0,''];
+      var check = {indonesia:0, vietnam:0, ud:0};
+      list.cards.forEach(function(card, indexCard){
+        var is = 0;
+        stSelect.forEach(function(e,i){
+          if (card.label_filtered_name.indexOf(e) > -1) {
+            nArray[i+1] += 1;
+            // check[e] += 1;
+            is = 1;
+          }
+        });
+        if (!is) {
+          // check.ud += 1;
+          nArray[stSelect.length+1] += 1;
+        }
+      })
+      $scope.GData.push(nArray);
+    })
 
 
-    // // console.log($scope.GData);
-    // var GData = google.visualization.arrayToDataTable($scope.GData);
-    // $scope.GChartData = {
-    //   type : 'ColumnChart',
-    //   data : GData,
-    //   options : {
-    //     width: 600,
-    //     height: 400,
-    //     legend: { position: 'top', maxLines: 3 },
-    //     bar: { groupWidth: '75%' },
-    //     isStacked: true,
-    //   }
-    // }
+    // console.log($scope.GData);
+    $scope.setChartParam = {
+      indonesia : true,
+      vietnam : true,
+      undocumented : true
+    }
+
+    $scope.reChart = function(){
+      $scope.GData = [
+        ['Origin']
+      ];
+      $scope.GChartData.options.colors = [];
+
+      if ($scope.setChartParam.indonesia) {
+        $scope.GData[0].push('Indonesia');
+        $scope.GChartData.options.colors.push('#e75');
+      }
+      if ($scope.setChartParam.vietnam) {
+        $scope.GData[0].push('Vietnam');
+        $scope.GChartData.options.colors.push('#baf');
+      }
+      if ($scope.setChartParam.undocumented) {
+        $scope.GData[0].push('Undocumented');
+        $scope.GChartData.options.colors.push('#abc');
+      }
+      $scope.GData[0].push({role:'annotation'});
+
+      console.log($scope.setChartParam)
+      listData.forEach(function(list, indexList){
+        var nArray = {name:list.name};
+        nArray.indonesia = 0;
+        nArray.vietnam = 0;
+        nArray.undocumented = 0;
+        nArray.annotation = '';
+
+        list.cards.forEach(function(card, indexCard){
+          var is = 0;
+          if (card.label_filtered_name.indexOf('indonesia') > -1 || card.label_filtered_name.indexOf('vietnam') > -1) {
+            is = 1;
+          }
+          if ($scope.setChartParam.indonesia && card.label_filtered_name.indexOf('indonesia') > -1) {
+            nArray['indonesia'] +=1;
+          }
+          if ($scope.setChartParam.vietnam && card.label_filtered_name.indexOf('vietnam') > -1) {
+            nArray['vietnam'] +=1;
+          }
+          if ($scope.setChartParam.undocumented && !is) {
+            nArray['undocumented'] +=1;
+          }
+        })
+        console.log(nArray)
+        var arr = []
+        for(i in nArray){
+          if (i == 'name' || i == 'annotation') {
+            arr.push(nArray[i]);
+          }
+          if ($scope.setChartParam.indonesia && i == 'indonesia') {
+            arr.push(nArray[i]);
+          }
+          if ($scope.setChartParam.vietnam && i == 'vietnam') {
+            arr.push(nArray[i]);
+          }
+          if ($scope.setChartParam.undocumented && i == 'undocumented') {
+            arr.push(nArray[i]);
+          }
+        }
+
+        $scope.GData.push(arr);
+      })
+      console.log($scope.GData);
+      $scope.GChartData.data = google.visualization.arrayToDataTable($scope.GData);
+    }
+
+    $scope.showChart = function(){
+      $scope.chartFlag = 1;
+      var GData = google.visualization.arrayToDataTable($scope.GData);
+      $scope.GChartData = {
+        type : 'ColumnChart',
+        data : GData,
+        options : {
+          legend: { position: 'top', maxLines: 3 },
+          bar: { groupWidth: '75%' },
+          isStacked: false,
+          colors: []
+        }
+      }
+
+      if ($scope.setChartParam.indonesia) {
+        $scope.GData[0].push('Indonesia');
+        $scope.GChartData.options.colors.push('#e75');
+      }
+      if ($scope.setChartParam.vietnam) {
+        $scope.GData[0].push('Vietnam');
+        $scope.GChartData.options.colors.push('#baf');
+      }
+      if ($scope.setChartParam.undocumented) {
+        $scope.GData[0].push('Undocumented');
+        $scope.GChartData.options.colors.push('#abc');
+      }
+    }
+    $scope.hideChart = function(){
+      $scope.chartFlag = 0;
+    }
+
   });
-
+  
 })
 
 // app.directive('barCharts', function(){
