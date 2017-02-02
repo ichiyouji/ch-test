@@ -17,7 +17,11 @@ var loginCallback = 'https://fierce-atoll-33773.herokuapp.com/api/authTrello'
 
 var key = '52af2d4bfeaa723904bd8d01a6101acd';
 var secret = 'c0b26eeb1213a94763cb1d766667cbb875a70075376dfcaaae76036a443af261';
-var expiry = '1day';
+// var expiry = '1day';
+var expiry = '1hour';
+var cookie_name = 'TokenAuth';
+var cookie_expiry = 3600000;
+// var cookie_expiry = 86400000;
 var token;
 var auth_secret;
 var oauth = new OAuth.OAuth(requestURL,accessURL,key,secret,'1.0',loginCallback,'HMAC-SHA1');
@@ -43,7 +47,12 @@ function isAuthenticated(req, res, next) {
 };
 
 function isAuthTrello(req,res,next){
-	if (!token) {
+	console.log(req.cookies[cookie_name]);
+	if (req.cookies[cookie_name]) {
+    t = new Trello(key,req.cookies[cookie_name]);
+
+		return next();
+	}else{
 		oauth.getOAuthRequestToken(function (error, oauth_token, oauth_secret, results) {
 		  if (!error) {
 				// var t = new Trello(key, oauth_token);
@@ -52,26 +61,19 @@ function isAuthTrello(req,res,next){
 	  		return res.send(resp);
 		    // return next();
 		  }
-	  	return res.redirect('/#error');
 		  console.log(error);
+	  	return res.redirect('/#error');
 		});
-	}else{
-		return next();
 	}
 }
 router.use('/board', isAuthTrello);
 router.use('/board/list/', isAuthTrello);
 
-router.route('/board')
+router.route('/signOut')
 	.get(function(req,res){
-		var listBoard = [];
-    t.get('/1/members/me/boards/', {}, function(err, data) {
-      if (err) {
-        token = '';
-      }
-      return res.send(data);
-    	console.log(data);
-    });
+    token = '';
+    res.clearCookie(cookie_name);
+		return res.redirect('/#/');
 	})
 
 router.route('/authTrello')
@@ -80,11 +82,26 @@ router.route('/authTrello')
 		oauth.getOAuthAccessToken(req.query.oauth_token, auth_secret, req.query.oauth_verifier,function (error, accessToken, accessTokenSecret, results) {
       console.log(accessToken)
       console.log(accessTokenSecret)
-      t = new Trello(key,accessToken);  
+      t = new Trello(key,accessToken);
       token = accessToken;
+      res.cookie(cookie_name, accessToken, { maxAge: cookie_expiry, httpOnly: true });
   		return res.redirect('/#/');
     })
 	})
+
+router.route('/board')
+	.get(function(req,res){
+		var listBoard = [];
+    t.get('/1/members/me/boards/', {}, function(err, data) {
+      if (err) {
+        token = '';
+        res.clearCookie(cookie_name);
+      }
+    	// console.log(data);
+      return res.send(data);
+    });
+	})
+
 
 router.route('/board/list/:id')
   .get(function(req, res) {

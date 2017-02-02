@@ -1,10 +1,13 @@
-var app = angular.module('myTestApp', ['ngRoute', 'ngResource', 'angularMoment','googlechart']).run(function($rootScope, $http) {
+var app = angular.module('myTestApp', ['ngRoute', 'ngCookies', 'ngResource', 'angularMoment','googlechart']).run(function($rootScope, $http, $window) {
   $rootScope.authenticated = false;
   $rootScope.currentUser = '';
   $rootScope.currentUserId = '';
 
   $rootScope.signout = function() {
-    $http.get('/auth/signout');
+    // $http.get('/auth/signout');
+    $http.get('/api/signOut').success(function(){
+      $window.location.reload();
+    });
 
     $rootScope.authenticated = false;
     $rootScope.currentUser = '';
@@ -48,7 +51,8 @@ app.factory('usearchService', function($resource) {
   return $resource('/users/find/:id', null, { update: { method: 'PUT' } });
 })
 
-app.run(function($rootScope, $location, $http, postService) {
+app.run(function($rootScope, $location, $http, postService, $cookies) {
+  console.log($cookies['TokenAuth'])
   $http.get('/auth/check/').success(function(data) {
     if (data.state == 'success') {
       $rootScope.authenticated = true;

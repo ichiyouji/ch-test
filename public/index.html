@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="javascripts/angular.min.js"></script>
 	<script type="text/javascript" src="javascripts/angular-route.js"></script>
 	<script type="text/javascript" src="javascripts/angular-resource.js"></script>
+	<script type="text/javascript" src="javascripts/angular-cookies.min.js"></script>
 	<script type="text/javascript" src="javascripts/moment.min.js"></script>
 	<script type="text/javascript" src="javascripts/angular-moment.min.js"></script>
 	<script type="text/javascript" src="javascripts/ui-bootstrap.min.js"></script>
@@ -58,7 +59,7 @@
 								</a>
 							</li>
 							<li class="linkItem">
-								<a href="#/">
+								<a href="#/" ng-click="signout()">
 									<i class="fa fa-sign-out"></i>
 									<span class="spanner">Log Out</span>
 								</a>
