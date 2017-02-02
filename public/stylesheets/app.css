@@ -365,6 +365,7 @@ nav .container{
 
 .commentWrap .commentDiv .cardCol{
 	display: flex;
+	min-height: 1px;
 }
 .commentWrap .commentDiv .cardCont{
 	/*display: inline-block;*/
