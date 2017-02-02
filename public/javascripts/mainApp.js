@@ -356,15 +356,15 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
 
       if ($scope.setChartParam.indonesia) {
         $scope.GData[0].push('Indonesia');
-        $scope.GChartData.options.colors.push('#e75');
+        $scope.GChartData.options.colors.push('#EB5A46');
       }
       if ($scope.setChartParam.vietnam) {
         $scope.GData[0].push('Vietnam');
-        $scope.GChartData.options.colors.push('#baf');
+        $scope.GChartData.options.colors.push('#C377E0');
       }
       if ($scope.setChartParam.undocumented) {
         $scope.GData[0].push('Undocumented');
-        $scope.GChartData.options.colors.push('#abc');
+        $scope.GChartData.options.colors.push('#c1c1c1');
       }
       $scope.GData[0].push({role:'annotation'});
 
@@ -430,15 +430,15 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
 
       if ($scope.setChartParam.indonesia) {
         $scope.GData[0].push('Indonesia');
-        $scope.GChartData.options.colors.push('#e75');
+        $scope.GChartData.options.colors.push('#EB5A46');
       }
       if ($scope.setChartParam.vietnam) {
         $scope.GData[0].push('Vietnam');
-        $scope.GChartData.options.colors.push('#baf');
+        $scope.GChartData.options.colors.push('#C377E0');
       }
       if ($scope.setChartParam.undocumented) {
         $scope.GData[0].push('Undocumented');
-        $scope.GChartData.options.colors.push('#abc');
+        $scope.GChartData.options.colors.push('#c1c1c1');
       }
     }
     $scope.hideChart = function(){
