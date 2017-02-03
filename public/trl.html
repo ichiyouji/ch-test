@@ -101,10 +101,15 @@
 											<time am-time-ago='toDate(card.id)'></time>
 										</span>
 
-										<span class="lab" ng-if="card.actions.length">
+										<span class="lab">
 											<!-- <span class="thin">moved</span> <time am-time-ago='card.actions.length ? card.actions[0].date : toDate(card.id)'></time>
 											<span class="thin">from</span> {{card.actions[0].data.listBefore.name}} -->
-											<span class="thin">Time Spent</span> {{card.latest.total.format}}
+											<span>
+												<span class="thin" ng-if="card.latest">Time Spent</span> {{card.latest.total.format}}
+											</span>
+											<span>
+												<span class="thin" ng-if="!card.latest">Time Spent</span> {{card.total.format}}
+											</span>
 										</span>
 
 										<div class="lab history" ng-if="card.actions.length">

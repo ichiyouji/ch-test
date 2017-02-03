@@ -52,7 +52,8 @@ app.factory('usearchService', function($resource) {
 })
 
 app.run(function($rootScope, $location, $http, postService, $cookies) {
-  console.log($cookies['TokenAuth'])
+  // console.log($cookies['TokenAuth'])
+
   $http.get('/auth/check/').success(function(data) {
     if (data.state == 'success') {
       $rootScope.authenticated = true;
@@ -81,7 +82,7 @@ app.controller('bdCtrl', function($scope, $rootScope, $compile, $http, $window){
 
 })
 
-app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routeParams) {
+app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routeParams, $window) {
   var nd = new Date();
 
   String.prototype.toTimeFormat = function() {
@@ -159,6 +160,10 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
   }
   
   $http.get('/api/board/list/'+$routeParams.id).success(function(data) {
+    if (data.auth) {
+      $window.location.href = data.url;
+    }
+
     var listData = [];
     var dist = [];
     var allHistory = [];
@@ -233,6 +238,10 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
             card.latest = card.history[0];
           }else{
             var dd = nd - new Date(parseInt((card.id).substring(0,8),16)*1000); 
+            card.total = {
+              orig: dd,
+              format: dd.toString().toTimeFormat()
+            }
             history[card.idList] = {
               card_name: card.name,
               card_id: card.id,
@@ -258,6 +267,7 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
                 }
               };
             }
+            
           }
           allHistory.push(history);
           nList.cards.push(card);
@@ -309,7 +319,7 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
     }
     
     $scope.trlData = listData;
-    $rootScope.trlData = listData;
+    // $rootScope.trlData = listData;
     $scope.labels = allLabel;
 
     $scope.labelSet = '';
@@ -317,7 +327,7 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
     $scope.setLabel = function($element){
       // console.log($scope.labelSet);
     }
-    // console.log(listData);
+    console.log(listData);
     // console.log(allLabel);
 
     $scope.GData = [
