@@ -392,12 +392,122 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
 
     $scope.labelSet = '';
 
-    $scope.setLabel = function($element){
+    $scope.setLabel = function(){
       var nListData = [];
 
+      // console.log($scope.labelSet)
+
       listData.forEach(function(list, listIndex){
-        
+
+        listData[listIndex].total = {
+          orig: 0,
+          format: '0'
+        }
+        listData[listIndex].total_list = {
+          orig: 0,
+          format: '0'
+        }
+        listData[listIndex].max_time = {
+          orig: 0,
+          format: '0'
+        }
+        listData[listIndex].max_history_time = {
+          orig: 0,
+          format: '0'
+        }
+        listData[listIndex].min_time = {
+          orig: 1.7976931348623157E+10308,
+          format: '0'
+        }
+        listData[listIndex].min_history_time = {
+          orig: 1.7976931348623157E+10308,
+          format: '0'
+        }
+        listData[listIndex].avg_time = {
+          orig: 0,
+          format: '0'
+        }
+        listData[listIndex].avg_history_time = {
+          orig: 0,
+          format: '0'
+        }
+
+        var countCard = 0;
+        var countGhost = 0;
+
+        if (list.cards) {
+          list.cards.forEach(function(card, cardIndex){
+            if (card.label_filtered.indexOf($scope.labelSet) > -1 || !$scope.labelSet) {
+              countCard++;
+              var created = nd - new Date(parseInt((card.id).substring(0,8),16)*1000);
+              var countTotal, minTime, maxTime;
+              if (card.latest) {
+                countTotal = listData[listIndex].total_list.orig + card.latest.total.orig;
+                minTime = listData[listIndex].min_time.orig < card.latest.total.orig ? listData[listIndex].min_time.orig : card.latest.total.orig;
+                maxTime = listData[listIndex].max_time.orig > card.latest.total.orig ? listData[listIndex].max_time.orig : card.latest.total.orig;
+              }else{
+                countTotal = listData[listIndex].total_list.orig + created;
+                minTime = listData[listIndex].min_time.orig < created ? listData[listIndex].min_time.orig : created;
+                maxTime = listData[listIndex].max_time.orig > created ? listData[listIndex].max_time.orig : created;
+              }
+              listData[listIndex].total_list = {
+                orig: countTotal,
+                format: countTotal.toString().toTimeFormat()
+              }
+
+              listData[listIndex].min_time = {
+                orig: minTime,
+                format: minTime < (1.7976931348623157E+10308) ? minTime.toString().toTimeFormat() : '0'
+              }
+
+              listData[listIndex].max_time = {
+                orig: maxTime,
+                format: maxTime.toString().toTimeFormat()
+              }
+
+            }
+          });
+        }
+        if (list.ghost) {
+          list.ghost.forEach(function(card, cardIndex){
+            if (card.card_label_filtered.indexOf($scope.labelSet) > -1 || !$scope.labelSet) {
+              countGhost++;
+
+              var countTotal = listData[listIndex].total_list.orig + card.total.orig;
+              var minHistoryTime = listData[listIndex].min_history_time.orig < card.total.orig ? listData[listIndex].min_history_time.orig : card.total.orig;
+              var maxHistoryTime = listData[listIndex].max_history_time.orig > card.total.orig ? listData[listIndex].max_history_time.orig : card.total.orig;
+
+              listData[listIndex].total = {
+                orig: countTotal,
+                format: countTotal.toString().toTimeFormat()
+              }
+              listData[listIndex].min_history_time = {
+                orig: minHistoryTime,
+                format: minHistoryTime < (1.7976931348623157E+10308) ? minHistoryTime.toString().toTimeFormat() : '0'
+              }
+              listData[listIndex].max_history_time = {
+                orig: maxHistoryTime,
+                format: maxHistoryTime.toString().toTimeFormat()
+              }
+            }
+          });
+        }
+
+        var avgTotal = listData[listIndex].total_list.orig > 0 ? listData[listIndex].total_list.orig/countCard : 0;
+        var avgHistoryTotal = listData[listIndex].total.orig > 0 ? listData[listIndex].total.orig/countGhost : 0;
+
+        listData[listIndex].avg_time = {
+          orig: avgTotal,
+          format: avgTotal > 0 ? avgTotal.toString().toTimeFormat() : '0'
+        }
+        listData[listIndex].avg_history_time = {
+          orig: avgHistoryTotal,
+          format: avgHistoryTotal > 0 ? avgHistoryTotal.toString().toTimeFormat() : '0'
+        }
+
       });
+
+      // $scope.trlData = listData;
 
       // console.log($scope.labelSet);
     }
