@@ -35,6 +35,9 @@
 						<div class="cardCol">
 							<div class="cardCont">
 								<span class="totalTime" style="font-size: 14px;">total Overall: {{list.total.format}}</span>
+								<span class="totalTime" style="font-size: 14px;">Min Overall: {{list.min_history_time.format}}</span>
+								<span class="totalTime" style="font-size: 14px;">Max Overall: {{list.max_history_time.format}}</span>
+								<span class="totalTime" style="font-size: 14px;">Avg Overall: {{list.avg_history_time.format}}</span>
 								<div>
 									<div ng-if="!labelSet || card.card_label_filtered.indexOf(labelSet) != -1" class="commentItem ghost" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.ghost | orderBy:'pos':false">
 										<span class="comment">
@@ -82,6 +85,9 @@
 							</div>
 							<div class="cardCont">
 								<span class="totalTime" style="font-size: 14px;">total Current: {{list.total_list.format}}</span>
+								<span class="totalTime" style="font-size: 14px;">Min Current: {{list.min_time.format}}</span>
+								<span class="totalTime" style="font-size: 14px;">Max Current: {{list.max_time.format}}</span>
+								<span class="totalTime" style="font-size: 14px;">Avg Current: {{list.avg_time.format}}</span>
 								<div ng-if="!list.cards.length" class="commentItem"><span class="comment">No Data</span></div>
 								<div>
 									<div ng-if="!labelSet || card.label_filtered.indexOf(labelSet) != -1" class="commentItem" data-index="{{card.id}}" id="{{card.id}}" ng-repeat="card in list.cards | orderBy:'pos':false" data-show="{{card.label_filtered.indexOf(labelSet)}}">

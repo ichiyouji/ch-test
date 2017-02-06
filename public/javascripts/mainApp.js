@@ -175,7 +175,23 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
       var nList = {
         name: list.name,
         id: list.id,
-        cards:[]
+        cards: [],
+        max_time: {
+          orig: 0,
+          format: '0'
+        },
+        max_history_time: {
+          orig: 0,
+          format: '0'
+        },
+        min_time: {
+          orig: 1.7976931348623157E+10308,
+          format: '0'
+        },
+        min_history_time: {
+          orig: 1.7976931348623157E+10308,
+          format: '0'
+        },
       }
       if (list.cards.length) {
         list.cards.forEach(function(card, indexCard){
@@ -233,11 +249,43 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
                   }
                 };
               }
+              var maxhistorytime = nList.max_history_time.orig > history[h].total.orig ? nList.max_history_time.orig : history[h].total.orig;
+              var minhistorytime = nList.min_history_time.orig < history[h].total.orig ? nList.min_history_time.orig : history[h].total.orig;
+              nList.max_history_time = {
+                orig: maxhistorytime,
+                format: maxhistorytime.toString().toTimeFormat()
+              }
+              nList.min_history_time = {
+                orig: minhistorytime,
+                format: minhistorytime < (1.7976931348623157E+10308) ? minhistorytime.toString().toTimeFormat() : '0'
+              }
               // console.log(history[h]);
+            }
+            var maxtime = nList.max_time.orig > card.history[0].total.orig ? nList.max_time.orig : card.history[0].total.orig;
+            var mintime = nList.min_time.orig < card.history[0].total.orig ? nList.min_time.orig : card.history[0].total.orig;
+            nList.max_time = {
+              orig: maxtime,
+              format: maxtime.toString().toTimeFormat()
+            }
+            nList.min_time = {
+              orig: mintime,
+              format: mintime < (1.7976931348623157E+10308) ? mintime.toString().toTimeFormat() : '0'
             }
             card.latest = card.history[0];
           }else{
             var dd = nd - new Date(parseInt((card.id).substring(0,8),16)*1000); 
+
+            var maxtime = nList.max_time.orig > dd ? nList.max_time.orig : dd;
+            var mintime = nList.min_time.orig < dd ? nList.min_time.orig : dd;
+            nList.max_time = {
+              orig: maxtime,
+              format: maxtime.toString().toTimeFormat()
+            }
+            nList.min_time = {
+              orig: mintime,
+              format: mintime < (1.7976931348623157E+10308) ? mintime.toString().toTimeFormat() : '0'
+            }
+
             card.total = {
               orig: dd,
               format: dd.toString().toTimeFormat()
@@ -311,6 +359,16 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
           orig : 0,
           format : (0).toString().toTimeFormat()
         }
+      }
+      var avgList = Math.round(listData[index].total_list.orig / listData[index].cards.length);
+      var avgHistory = Math.round(listData[index].total.orig / listData[index].ghost.length);
+      listData[index].avg_time = {
+        orig: avgList,
+        format: avgList.toString().toTimeFormat()
+      }
+      listData[index].avg_history_time = {
+        orig: avgHistory,
+        format: avgHistory.toString().toTimeFormat()
       }
     });
 
