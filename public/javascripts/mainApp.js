@@ -249,16 +249,16 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
                   }
                 };
               }
-              var maxhistorytime = nList.max_history_time.orig > history[h].total.orig ? nList.max_history_time.orig : history[h].total.orig;
-              var minhistorytime = nList.min_history_time.orig < history[h].total.orig ? nList.min_history_time.orig : history[h].total.orig;
-              nList.max_history_time = {
-                orig: maxhistorytime,
-                format: maxhistorytime.toString().toTimeFormat()
-              }
-              nList.min_history_time = {
-                orig: minhistorytime,
-                format: minhistorytime < (1.7976931348623157E+10308) ? minhistorytime.toString().toTimeFormat() : '0'
-              }
+              // var maxhistorytime = nList.max_history_time.orig > history[h].total.orig ? nList.max_history_time.orig : history[h].total.orig;
+              // var minhistorytime = nList.min_history_time.orig < history[h].total.orig ? nList.min_history_time.orig : history[h].total.orig;
+              // nList.max_history_time = {
+              //   orig: maxhistorytime,
+              //   format: maxhistorytime.toString().toTimeFormat()
+              // }
+              // nList.min_history_time = {
+              //   orig: minhistorytime,
+              //   format: minhistorytime < (1.7976931348623157E+10308) ? minhistorytime.toString().toTimeFormat() : '0'
+              // }
               // console.log(history[h]);
             }
             var maxtime = nList.max_time.orig > card.history[0].total.orig ? nList.max_time.orig : card.history[0].total.orig;
@@ -331,6 +331,16 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
         for (h in hist){
           if (hist[h] && hist[h].id == elem.id) {
             listData[index].ghost.push(hist[h]);
+            var maxhistorytime = listData[index].max_history_time.orig > hist[h].total.orig ? listData[index].max_history_time.orig : hist[h].total.orig;
+            var minhistorytime = listData[index].min_history_time.orig < hist[h].total.orig ? listData[index].min_history_time.orig : hist[h].total.orig;
+            listData[index].max_history_time = {
+              orig: maxhistorytime,
+              format: maxhistorytime.toString().toTimeFormat()
+            }
+            listData[index].min_history_time = {
+              orig: minhistorytime,
+              format: minhistorytime < (1.7976931348623157E+10308) ? minhistorytime.toString().toTimeFormat() : '0'
+            }
           }
         }
       });
@@ -341,9 +351,9 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
         var totalListFormat = '';
         elem.cards.forEach(function(card, cardIndex){
           if (card.latest) {
-            totalList += card.latest.total.orig
+            totalList += card.latest.total.orig;
           }else{
-            totalList += nd - new Date(parseInt((card.id).substring(0,8),16)*1000)
+            totalList += nd - new Date(parseInt((card.id).substring(0,8),16)*1000);
           }
         })
         listData[index].total_list = {
@@ -383,6 +393,12 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
     $scope.labelSet = '';
 
     $scope.setLabel = function($element){
+      var nListData = [];
+
+      listData.forEach(function(list, listIndex){
+        
+      });
+
       // console.log($scope.labelSet);
     }
     console.log(listData);
