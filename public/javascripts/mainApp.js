@@ -473,7 +473,7 @@ app.controller('trlCtrl', function($scope, $rootScope, $compile, $http, $routePa
             if (card.card_label_filtered.indexOf($scope.labelSet) > -1 || !$scope.labelSet) {
               countGhost++;
 
-              var countTotal = listData[listIndex].total_list.orig + card.total.orig;
+              var countTotal = listData[listIndex].total.orig + card.total.orig;
               var minHistoryTime = listData[listIndex].min_history_time.orig < card.total.orig ? listData[listIndex].min_history_time.orig : card.total.orig;
               var maxHistoryTime = listData[listIndex].max_history_time.orig > card.total.orig ? listData[listIndex].max_history_time.orig : card.total.orig;
 
